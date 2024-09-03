@@ -7,17 +7,36 @@ import { ScrollArea } from "@/components/tailwind/ui/scroll-area";
 import { BookOpen, GithubIcon } from "lucide-react";
 import Link from "next/link";
 import {SidebarLayout} from "@/components/tailwind/ui/sidebar-layout";
-import {FileSystemTree} from "@/app/test";
+import {FileSystemItem, FileSystemTree} from "@/app/test";
 import * as React from "react";
 import {data} from "@/app/test/page";
+import {useEditorStore} from "@/hooks/use-editor-store";
+import {BaseDirectory, readTextFile} from "@tauri-apps/plugin-fs";
+import {fileManager} from "@/lib/Filemanager";
+import {EditorInstance} from "novel";
 
 export default function Page() {
+    const {
+        currentFilePath, editorContent, saveStatus, charsCount, fileSystem,
+        setCurrentFilePath, setEditorContent, setSaveStatus, setCharsCount, setFileSystem, editorInstance
+    } = useEditorStore();
+    const handleSelectChange = async (item:FileSystemItem, editor: EditorInstance) => {
+        if (item && item.path && item.type === 'file') {
+            console.log('wow')
+                const content = await fileManager.openFile(item.path);
+                setEditorContent(JSON.parse(content))
+            editorInstance?.commands.setContent(JSON.parse(content))
+            console.log(content)
+            
+            setCurrentFilePath(item.path);
+        }
+    };
   return (
     <SidebarLayout navbar={false} sidebar={
         <FileSystemTree
-          data={data}
+          data={fileSystem}
           className="h-screen w-[90%]"
-          onSelectChange={(item) => console.log(item?.name ?? "")}
+          onSelectChange={handleSelectChange}
           onCreateFile={(parentId) => console.log("Create file in:", parentId)}
           onCreateFolder={(parentId) => console.log("Create folder in:", parentId)}
           onDelete={(item) => console.log("Delete:", item)}

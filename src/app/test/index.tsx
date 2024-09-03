@@ -15,6 +15,7 @@ interface FileSystemItem {
     name: string;
     type: 'file' | 'folder';
     children?: FileSystemItem[];
+    path?: string;
     icon?: LucideIcon;
 }
 

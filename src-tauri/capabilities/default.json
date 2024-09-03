@@ -6,6 +6,31 @@
     "main"
   ],
   "permissions": [
-    "core:default"
+    "core:default",
+    "fs:allow-write",
+    "fs:allow-read",
+    "fs:allow-app-read",
+    "fs:allow-rename",
+    "fs:allow-mkdir",
+    "fs:allow-read-dir",
+    "fs:allow-remove",
+    "fs:allow-write-text-file",
+    "fs:scope-download-recursive",
+    "fs:scope-resource-recursive",
+    {
+      "identifier": "fs:scope",
+      "allow": [
+        { "path": "$DOCUMENT" },
+        { "path": "$DOCUMENT/**" },
+        { "path": "$DOCUMENT/**/*" },
+        { "path": "$APPDATA" },
+        { "path": "$APPDATA/**" },
+        { "path": "$APPDATA/**/*" },
+        { "path": "$HOME" },
+        { "path": "**" },
+        { "path": "**/*" },
+        { "path": "/**/*" }
+      ]
+    }
   ]
 }

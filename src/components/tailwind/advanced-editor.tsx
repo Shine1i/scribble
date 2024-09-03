@@ -8,7 +8,7 @@ import {
   EditorContent,
   type EditorInstance,
   EditorRoot,
-  type JSONContent,
+  type JSONContent, useEditor,
 } from "novel";
 import { ImageResizer, handleCommandNavigation } from "novel/extensions";
 import { useEffect, useState } from "react";
@@ -25,15 +25,19 @@ import GenerativeMenuSwitch from "./generative/generative-menu-switch";
 import { uploadFn } from "./image-upload";
 import { TextButtons } from "./selectors/text-buttons";
 import { slashCommand, suggestionItems } from "./slash-command";
-
+import {writeTextFile, readTextFile, create, BaseDirectory, readDir, DirEntry} from '@tauri-apps/plugin-fs';
 import hljs from 'highlight.js';
-
+import {FileSystemItem} from "@/app/test";
+import {useEditorStore} from "@/hooks/use-editor-store";
+import {join} from "@tauri-apps/api/path";
+import {fileManager} from "@/lib/Filemanager";
 const extensions = [...defaultExtensions, slashCommand];
 
 const MarkdownEditor = () => {
-  const [initialContent, setInitialContent] = useState<null | JSONContent>(null);
-  const [saveStatus, setSaveStatus] = useState("Saved");
-  const [charsCount, setCharsCount] = useState();
+  const {
+    currentFilePath, editorContent, saveStatus, charsCount, fileSystem, setEditorInstance,
+    setCurrentFilePath, setEditorContent, setSaveStatus, setCharsCount, setFileSystem, editorInstance
+  } = useEditorStore();
   
   const [openNode, setOpenNode] = useState(false);
   const [openColor, setOpenColor] = useState(false);
@@ -54,20 +58,55 @@ const MarkdownEditor = () => {
   const debouncedUpdates = useDebouncedCallback(async (editor: EditorInstance) => {
     const json = editor.getJSON();
     setCharsCount(editor.storage.characterCount.words());
-    window.localStorage.setItem("html-content", highlightCodeblocks(editor.getHTML()));
-    window.localStorage.setItem("novel-content", JSON.stringify(json));
-    window.localStorage.setItem("markdown", editor.storage.markdown.getMarkdown());
-    setSaveStatus("Saved");
+    setEditorInstance(editor)
+    if (editor.getText().length > 0){
+    // setEditorContent(json);
+    await saveCurrentFile()
+    }
+    
+    setSaveStatus("Unsaved");
   }, 500);
+  async function saveCurrentFile() {
+    if (!currentFilePath) {
+      console.error("No file path specified");
+      return;
+    }
+    try {
+      console.log(editorInstance,'editor')
+      await fileManager.saveFile(currentFilePath, JSON.stringify(editorInstance?.getJSON()));
+      setSaveStatus("Saved");
+    } catch (error) {
+      console.error("Failed to save file:", error);
+    }
+  }
   
+  
+  
+
+  
+  useEffect( () => {
+    // refreshFileSystem();
+    fileManager.initializeFileSystem().finally(async () => {
+      setFileSystem(await fileManager.retrieveFileSystem());
+    });
+   
+  }, []);
+
+  useEffect(() => {
+    if (saveStatus === "Unsaved") {
+      const timer = setTimeout(saveCurrentFile, 2000);
+      return () => clearTimeout(timer);
+    }
+ 
+    
+  }, [saveStatus, editorContent]);
   useEffect(() => {
     const content = window.localStorage.getItem("novel-content");
-    if (content) setInitialContent(JSON.parse(content));
-    else setInitialContent(defaultEditorContent);
+    console.log(content)
+    if (content) setEditorContent(JSON.parse(content));
+    else setEditorContent(defaultEditorContent);
   }, []);
-  
-  if (!initialContent) return null;
-  
+  if (!editorContent) return null;
   return (
     <div className="relative w-full ">
       <div className="flex absolute right-5 top-5 z-10 mb-5 gap-2">
@@ -78,7 +117,7 @@ const MarkdownEditor = () => {
       </div>
       <EditorRoot>
         <EditorContent
-          initialContent={initialContent}
+          initialContent={editorContent}
           extensions={extensions}
           immediatelyRender={false}
           className="relative min-h-[500px] w-full    sm:mb-[calc(20vh)] sm:rounded-lg  sm:shadow-lg"
@@ -97,6 +136,10 @@ const MarkdownEditor = () => {
           onUpdate={({ editor }) => {
             debouncedUpdates(editor);
             setSaveStatus("Unsaved");
+          }}
+          onCreate={({ editor }) => {
+            setEditorInstance(editor)
+            console.log(editor)
           }}
           slotAfter={<ImageResizer />}
         >
