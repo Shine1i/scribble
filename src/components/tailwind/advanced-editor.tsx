@@ -30,7 +30,7 @@ import hljs from 'highlight.js';
 import {FileSystemItem} from "@/app/test";
 import {useEditorStore} from "@/hooks/use-editor-store";
 import {join} from "@tauri-apps/api/path";
-import {fileManager} from "@/lib/Filemanager";
+import {fileManager} from "@/lib/managers/FileManager";
 const extensions = [...defaultExtensions, slashCommand];
 
 const MarkdownEditor = () => {
@@ -59,12 +59,13 @@ const MarkdownEditor = () => {
     const json = editor.getJSON();
     setCharsCount(editor.storage.characterCount.words());
     setEditorInstance(editor)
+    setSaveStatus("Unsaved");
+    
     if (editor.getText().length > 0){
     // setEditorContent(json);
     await saveCurrentFile()
     }
     
-    setSaveStatus("Unsaved");
   }, 500);
   async function saveCurrentFile() {
     if (!currentFilePath) {
@@ -102,7 +103,6 @@ const MarkdownEditor = () => {
   }, [saveStatus, editorContent]);
   useEffect(() => {
     const content = window.localStorage.getItem("novel-content");
-    console.log(content)
     if (content) setEditorContent(JSON.parse(content));
     else setEditorContent(defaultEditorContent);
   }, []);
@@ -137,9 +137,9 @@ const MarkdownEditor = () => {
             debouncedUpdates(editor);
             setSaveStatus("Unsaved");
           }}
-          onCreate={({ editor }) => {
+          
+          onBeforeCreate={({ editor }) => {
             setEditorInstance(editor)
-            console.log(editor)
           }}
           slotAfter={<ImageResizer />}
         >

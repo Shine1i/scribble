@@ -12,7 +12,7 @@ import * as React from "react";
 import {data} from "@/app/test/page";
 import {useEditorStore} from "@/hooks/use-editor-store";
 import {BaseDirectory, readTextFile} from "@tauri-apps/plugin-fs";
-import {fileManager} from "@/lib/Filemanager";
+import {fileManager} from "@/lib/managers/FileManager";
 import {EditorInstance} from "novel";
 
 export default function Page() {
