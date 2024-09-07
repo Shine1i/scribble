@@ -53,7 +53,7 @@ export function SidebarLayout({
     
     // @ts-ignore
     return (
-      <div className="relative isolate flex min-h-svh w-full bg-white max-lg:flex-col lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950">
+      <div className="relative isolate flex min-h-svh w-full max-lg:flex-col bg-background">
           {/* Sidebar on desktop */}
           <div className="fixed inset-y-0 left-0 w-64 max-lg:hidden">{sidebar}</div>
           
@@ -70,7 +70,10 @@ export function SidebarLayout({
           
           {/* Content */}
           <main className="flex flex-1 flex-col pb-2 lg:min-w-0 lg:pl-64 lg:pr-2 lg:pt-2">
-              <div className="grow p-6 lg:rounded-lg lg:bg-white lg:p-0 lg:shadow-sm lg:ring-1 lg:ring-zinc-950/5 dark:lg:bg-zinc-900 dark:lg:ring-white/10">
+              <div className="grow p-6
+              bg-card
+              text-card-foreground
+              lg:rounded-lg lg:p-0 lg:shadow-sm lg:ring-1 lg:ring-zinc-950/5 dark:lg:ring-white/10">
                   {/*max-w-6xl*/}
                   <div className="mx-auto w-full">{children}</div>
               </div>
