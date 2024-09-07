@@ -1,39 +1,36 @@
-import {FileSystemItem} from "@/app/test";
-import {BaseDirectory, DirEntry, readDir} from "@tauri-apps/plugin-fs";
+import { BaseDirectory, DirEntry, readDir } from "@tauri-apps/plugin-fs";
+import {FileSystemItem, IFileSystemRefresher} from "@/lib/interfaces/IFileInterfaces";
 import {join} from "@tauri-apps/api/path";
-import {IFileSystemRefresher} from "@/lib/interfaces/IFileInterfaces";
 
 export class FileSystemRefresher implements IFileSystemRefresher {
-    async retrieveFileSystem():  Promise<FileSystemItem[]>  {
+    async retrieveFileSystem(): Promise<FileSystemItem[]> {
         try {
-            const entries = await readDir('Scribble', { baseDir: BaseDirectory.Document });
-            return await this.processEntriesRecursively('Scribble', entries);
+            return this.processDirectory('Scribble', BaseDirectory.Document);
         } catch (error) {
             console.error("Failed to refresh file system:", error);
             throw new Error("Refresh operation failed");
         }
     }
     
-    private async processEntriesRecursively(parent: string, entries: DirEntry[]): Promise<FileSystemItem[]> {
-        const fileSystemItems: FileSystemItem[] = [];
+    private async processDirectory(path: string, baseDir: BaseDirectory): Promise<FileSystemItem[]> {
+        const entries = await readDir(path, { baseDir: baseDir });
+        const items: FileSystemItem[] = [];
+        
         for (const entry of entries) {
-            const fullPath = await join(parent, entry.name ?? '');
             const newItem: FileSystemItem = {
-                id: fileSystemItems.length.toFixed(),
-                name: entry.name ?? '',
-                type: entry.isDirectory ? 'folder' : 'file',
-                path: fullPath,
-                children: entry.isDirectory ? [] : undefined
+                id: await join(path, entry.name),
+                name: entry.name,
+                isSelectable: true,
+                path:await join(path, entry.name)
             };
             
             if (entry.isDirectory) {
-                const dir = await join(parent, entry.name);
-                newItem.children = await this.processEntriesRecursively(dir, await readDir(dir, { baseDir: BaseDirectory.Document }));
+                newItem.children = await this.processDirectory(await join(path, entry.name), baseDir);
             }
             
-            fileSystemItems.push(newItem);
+            items.push(newItem);
         }
         
-        return fileSystemItems;
+        return items;
     }
 }

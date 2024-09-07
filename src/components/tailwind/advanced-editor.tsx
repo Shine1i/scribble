@@ -25,25 +25,34 @@ import GenerativeMenuSwitch from "./generative/generative-menu-switch";
 import { uploadFn } from "./image-upload";
 import { TextButtons } from "./selectors/text-buttons";
 import { slashCommand, suggestionItems } from "./slash-command";
-import {writeTextFile, readTextFile, create, BaseDirectory, readDir, DirEntry} from '@tauri-apps/plugin-fs';
 import hljs from 'highlight.js';
-import {FileSystemItem} from "@/app/test";
+
 import {useEditorStore} from "@/hooks/use-editor-store";
-import {join} from "@tauri-apps/api/path";
-import {fileManager} from "@/lib/managers/FileManager";
-const extensions = [...defaultExtensions, slashCommand];
+import {useFileSystemStore} from "@/hooks/use-file-system";
+
 
 const MarkdownEditor = () => {
   const {
-    currentFilePath, editorContent, saveStatus, charsCount, fileSystem, setEditorInstance,
-    setCurrentFilePath, setEditorContent, setSaveStatus, setCharsCount, setFileSystem, editorInstance
-  } = useEditorStore();
+    currentFilePath,
+    saveCurrentFile,
+    saveStatus,
+    setSaveStatus
+  } = useFileSystemStore();
   
+  const {
+    editorContent,
+    charsCount,
+    editorInstance,
+    setEditorInstance,
+    setEditorContent,
+    setCharsCount,
+    setTocItems
+  } = useEditorStore();;
   const [openNode, setOpenNode] = useState(false);
   const [openColor, setOpenColor] = useState(false);
   const [openLink, setOpenLink] = useState(false);
   const [openAI, setOpenAI] = useState(false);
-  
+  const extensions = [...defaultExtensions, slashCommand];
   //Apply Codeblock Highlighting on the HTML from editor.getHTML()
   const highlightCodeblocks = (content: string) => {
     const doc = new DOMParser().parseFromString(content, 'text/html');
@@ -58,54 +67,27 @@ const MarkdownEditor = () => {
   const debouncedUpdates = useDebouncedCallback(async (editor: EditorInstance) => {
     const json = editor.getJSON();
     setCharsCount(editor.storage.characterCount.words());
-    setEditorInstance(editor)
+    setEditorInstance(editor);
     setSaveStatus("Unsaved");
     
-    if (editor.getText().length > 0){
-    // setEditorContent(json);
-    await saveCurrentFile()
+    if (editor.getText().length > 0) {
+      await saveCurrentFile(editor);
     }
-    
   }, 500);
-  async function saveCurrentFile() {
-    if (!currentFilePath) {
-      console.error("No file path specified");
-      return;
-    }
-    try {
-      console.log(editorInstance,'editor')
-      await fileManager.saveFile(currentFilePath, JSON.stringify(editorInstance?.getJSON()));
-      setSaveStatus("Saved");
-    } catch (error) {
-      console.error("Failed to save file:", error);
-    }
-  }
   
-  
-  
-
-  
-  useEffect( () => {
-    // refreshFileSystem();
-    fileManager.initializeFileSystem().finally(async () => {
-      setFileSystem(await fileManager.retrieveFileSystem());
-    });
-   
-  }, []);
-
   useEffect(() => {
-    if (saveStatus === "Unsaved") {
-      const timer = setTimeout(saveCurrentFile, 2000);
+    if (saveStatus === "Unsaved" && editorInstance) {
+      const timer = setTimeout(() => saveCurrentFile(editorInstance), 2000);
       return () => clearTimeout(timer);
     }
- 
-    
-  }, [saveStatus, editorContent]);
+  }, [saveStatus, editorContent, editorInstance, saveCurrentFile]);
+  
   useEffect(() => {
     const content = window.localStorage.getItem("novel-content");
     if (content) setEditorContent(JSON.parse(content));
     else setEditorContent(defaultEditorContent);
   }, []);
+  
   if (!editorContent) return null;
   return (
     <div className="relative w-full ">
@@ -120,7 +102,7 @@ const MarkdownEditor = () => {
           initialContent={editorContent}
           extensions={extensions}
           immediatelyRender={false}
-          className="relative min-h-[500px] w-full    sm:mb-[calc(20vh)] sm:rounded-lg  sm:shadow-lg"
+          className="relative min-h-[500px] w-f ull    sm:mb-[calc(20vh)] sm:rounded-lg  sm:shadow-lg"
           editorProps={{
             //@ts-ignore
             handleDOMEvents: {
@@ -149,7 +131,7 @@ const MarkdownEditor = () => {
               {suggestionItems.map((item) => (
                 <EditorCommandItem
                   value={item.title}
-                  onCommand={(val) => item.command(val)}
+                  onCommand={(val) => item.command!(val)}
                   className="flex w-full items-center space-x-2 rounded-md px-2 py-1 text-left text-sm hover:bg-accent aria-selected:bg-accent"
                   key={item.title}
                 >
