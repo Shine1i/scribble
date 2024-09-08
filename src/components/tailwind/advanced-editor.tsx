@@ -102,7 +102,7 @@ const MarkdownEditor = () => {
           initialContent={editorContent}
           extensions={extensions}
           immediatelyRender={false}
-          className="relative min-h-[500px] w-full bg-[#f9f5d7] dark:bg-background h-full    sm:mb-[calc(20vh)] sm:rounded-lg  sm:shadow-lg"
+          className="relative min-h-[500px] w-full bg-card h-full sm:mb-[calc(20vh)] sm:rounded-lg  sm:shadow-lg"
           editorProps={{
             //@ts-ignore
             handleDOMEvents: {
