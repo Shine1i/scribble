@@ -59,7 +59,7 @@ export function SidebarLayout({
               text-card-foreground
               lg:rounded-lg lg:p-0 lg:shadow-sm lg:ring-1 lg:ring-zinc-950/5 dark:lg:ring-white/10">
                   {/*max-w-6xl*/}
-                  <div className="mx-auto w-full">{children}</div>
+                  <div className="mx-auto w-full h-full">{children}</div>
               </div>
           </main>
       </div>

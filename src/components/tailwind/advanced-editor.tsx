@@ -90,7 +90,7 @@ const MarkdownEditor = () => {
   
   if (!editorContent) return null;
   return (
-    <div className="relative w-full ">
+    <div className="relative w-full h-full ">
       <div className="flex absolute right-5 top-5 z-10 mb-5 gap-2">
         <div className="rounded-lg bg-accent px-2 py-1 text-sm text-muted-foreground">{saveStatus}</div>
         <div className={charsCount ? "rounded-lg bg-accent px-2 py-1 text-sm text-muted-foreground" : "hidden"}>
@@ -102,7 +102,7 @@ const MarkdownEditor = () => {
           initialContent={editorContent}
           extensions={extensions}
           immediatelyRender={false}
-          className="relative min-h-[500px] w-f ull    sm:mb-[calc(20vh)] sm:rounded-lg  sm:shadow-lg"
+          className="relative min-h-[500px] w-full bg-[#f9f5d7] dark:bg-background h-full    sm:mb-[calc(20vh)] sm:rounded-lg  sm:shadow-lg"
           editorProps={{
             //@ts-ignore
             handleDOMEvents: {
@@ -112,7 +112,7 @@ const MarkdownEditor = () => {
             handleDrop: (view, event, _slice, moved) => handleImageDrop(view, event, moved, uploadFn),
             attributes: {
               class:
-                "prose prose-lg dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full",
+                "prose prose-h2:text-[var(--tw-prose-h2)] prose-h3:text-[var(--tw-prose-h3)] prose-h4:text-[var(--tw-prose-h4)] prose-h5:text-[var(--tw-prose-h5)]  prose-gruvbox dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full",
             },
           }}
           onUpdate={({ editor }) => {

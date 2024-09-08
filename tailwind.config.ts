@@ -17,6 +17,45 @@ const config: Config = {
       },
     },
     extend: {
+      typography: ({ theme }) => ({
+        gruvbox: {
+          css: {
+            '--tw-prose-body': '#3c3836', // fg
+            '--tw-prose-headings': '#9d0006', // fg0
+            '--tw-prose-lead': '#504945', // fg2
+            '--tw-prose-links': '#076678', // blue
+            '--tw-prose-bold': '#282828', // fg0
+            '--tw-prose-counters': '#7c6f64', // fg4
+            '--tw-prose-bullets': '#928374', // gray
+            '--tw-prose-hr': '#d5c4a1', // bg2
+            '--tw-prose-quotes': '#504945', // fg2
+            '--tw-prose-quote-borders': '#bdae93', // bg3
+            '--tw-prose-captions': '#665c54', // fg3
+            '--tw-prose-code': '#9d0006', // red
+            '--tw-prose-pre-code': '#3c3836', // bg0_h
+            '--tw-prose-pre-bg': '#f2e5bc', // fg
+            '--tw-prose-th-borders': '#d5c4a1', // bg2
+            '--tw-prose-td-borders': '#ebdbb2', // bg1
+            '--tw-prose-invert-body': '#ebdbb2', // bg1
+            '--tw-prose-invert-headings': '#fbf1c7', // bg0_h
+            '--tw-prose-invert-lead': '#d5c4a1', // bg2
+            '--tw-prose-invert-links': '#83a598', // blue
+            '--tw-prose-invert-bold': '#fbf1c7', // bg0_h
+            '--tw-prose-invert-counters': '#bdae93', // bg3
+            '--tw-prose-invert-bullets': '#928374', // gray
+            '--tw-prose-invert-hr': '#504945', // fg2
+            '--tw-prose-invert-quotes': '#d5c4a1', // bg2
+            '--tw-prose-invert-quote-borders': '#665c54', // fg3
+            '--tw-prose-invert-captions': '#bdae93', // bg3
+            '--tw-prose-invert-code': '#fb4934', // bright red
+            '--tw-prose-invert-pre-code': '#282828', // fg0
+            '--tw-prose-invert-pre-bg': '#ebdbb2', // bg1
+            '--tw-prose-invert-th-borders': '#504945', // fg2
+            '--tw-prose-invert-td-borders': '#3c3836', // fg
+          },
+        },
+      }),
+      
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
