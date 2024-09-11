@@ -14,6 +14,7 @@ export function isValidUrl(url: string) {
     return false;
   }
 }
+
 export function getUrlFromString(str: string) {
   if (isValidUrl(str)) return str;
   try {
@@ -24,6 +25,7 @@ export function getUrlFromString(str: string) {
     return null;
   }
 }
+
 interface LinkSelectorProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -42,7 +44,11 @@ export const LinkSelector = ({ open, onOpenChange }: LinkSelectorProps) => {
   return (
     <Popover modal={true} open={open} onOpenChange={onOpenChange}>
       <PopoverTrigger asChild>
-        <Button size="sm" variant="ghost" className="gap-2 rounded-none border-none">
+        <Button
+          size="sm"
+          variant="ghost"
+          className="gap-2 rounded-none border-none"
+        >
           <p className="text-base">↗</p>
           <p
             className={cn("underline decoration-stone-400 underline-offset-4", {

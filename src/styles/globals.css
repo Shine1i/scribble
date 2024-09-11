@@ -107,8 +107,6 @@
     --tw-prose-th-borders: #504945;
     --tw-prose-td-borders: #3c3836;
 
-
-
     --novel-highlight-default: #000000;
     --novel-highlight-purple: #3f2c4b;
     --novel-highlight-red: #5c1a1a;
@@ -125,11 +123,11 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 }
-
 
 pre {
   background: #0d0d0d;

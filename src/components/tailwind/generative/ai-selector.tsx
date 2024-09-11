@@ -15,6 +15,7 @@ import Magic from "../ui/icons/magic";
 import { ScrollArea } from "../ui/scroll-area";
 import AICompletionCommands from "./ai-completion-command";
 import AISelectorCommands from "./ai-selector-commands";
+
 //TODO: I think it makes more sense to create a custom Tiptap extension for this functionality https://tiptap.dev/docs/editor/ai/introduction
 
 interface AISelectorProps {
@@ -70,7 +71,11 @@ export function AISelector({ onOpenChange }: AISelectorProps) {
               value={inputValue}
               onValueChange={setInputValue}
               autoFocus
-              placeholder={hasCompletion ? "Tell AI what to do next" : "Ask AI to edit or generate..."}
+              placeholder={
+                hasCompletion
+                  ? "Tell AI what to do next"
+                  : "Ask AI to edit or generate..."
+              }
               onFocus={() => addAIHighlight(editor)}
             />
             <Button
@@ -83,7 +88,9 @@ export function AISelector({ onOpenChange }: AISelectorProps) {
                   }).then(() => setInputValue(""));
 
                 const slice = editor.state.selection.content();
-                const text = editor.storage.markdown.serializer.serialize(slice.content);
+                const text = editor.storage.markdown.serializer.serialize(
+                  slice.content,
+                );
 
                 complete(text, {
                   body: { option: "zap", command: inputValue },
@@ -102,7 +109,11 @@ export function AISelector({ onOpenChange }: AISelectorProps) {
               completion={completion}
             />
           ) : (
-            <AISelectorCommands onSelect={(value, option) => complete(value, { body: { option } })} />
+            <AISelectorCommands
+              onSelect={(value, option) =>
+                complete(value, { body: { option } })
+              }
+            />
           )}
         </>
       )}

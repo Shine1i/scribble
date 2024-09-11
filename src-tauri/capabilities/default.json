@@ -20,16 +20,36 @@
     {
       "identifier": "fs:scope",
       "allow": [
-        { "path": "$DOCUMENT" },
-        { "path": "$DOCUMENT/**" },
-        { "path": "$DOCUMENT/**/*" },
-        { "path": "$APPDATA" },
-        { "path": "$APPDATA/**" },
-        { "path": "$APPDATA/**/*" },
-        { "path": "$HOME" },
-        { "path": "**" },
-        { "path": "**/*" },
-        { "path": "/**/*" }
+        {
+          "path": "$DOCUMENT"
+        },
+        {
+          "path": "$DOCUMENT/**"
+        },
+        {
+          "path": "$DOCUMENT/**/*"
+        },
+        {
+          "path": "$APPDATA"
+        },
+        {
+          "path": "$APPDATA/**"
+        },
+        {
+          "path": "$APPDATA/**/*"
+        },
+        {
+          "path": "$HOME"
+        },
+        {
+          "path": "**"
+        },
+        {
+          "path": "**/*"
+        },
+        {
+          "path": "/**/*"
+        }
       ]
     }
   ]

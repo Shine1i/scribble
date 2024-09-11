@@ -17,9 +17,12 @@ export async function POST(req: Request): Promise<Response> {
   });
   // Check if the OPENAI_API_KEY is set, if not return 400
   if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === "") {
-    return new Response("Missing OPENAI_API_KEY - make sure to add it to your .env file.", {
-      status: 400,
-    });
+    return new Response(
+      "Missing OPENAI_API_KEY - make sure to add it to your .env file.",
+      {
+        status: 400,
+      },
+    );
   }
   if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
     const ip = req.headers.get("x-forwarded-for");
@@ -28,7 +31,9 @@ export async function POST(req: Request): Promise<Response> {
       limiter: Ratelimit.slidingWindow(50, "1 d"),
     });
 
-    const { success, limit, reset, remaining } = await ratelimit.limit(`novel_ratelimit_${ip}`);
+    const { success, limit, reset, remaining } = await ratelimit.limit(
+      `novel_ratelimit_${ip}`,
+    );
 
     if (!success) {
       return new Response("You have reached your request limit for the day.", {
@@ -75,7 +80,8 @@ export async function POST(req: Request): Promise<Response> {
       {
         role: "system",
         content:
-          "You are an AI writing assistant that shortens existing text. " + "Use Markdown formatting when appropriate.",
+          "You are an AI writing assistant that shortens existing text. " +
+          "Use Markdown formatting when appropriate.",
       },
       {
         role: "user",
