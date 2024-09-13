@@ -25,7 +25,6 @@ import { UploadImagesPlugin } from "novel/plugins";
 
 import { cx } from "class-variance-authority";
 import { common, createLowlight } from "lowlight";
-import { TableOfContents } from "@/lib/extensions/tableOfContent";
 
 //TODO I am using cx here to get tailwind autocomplete working, idk if someone else can write a regex to just capture the class key in objects
 const aiHighlight = AIHighlight;
@@ -148,15 +147,7 @@ const mathematics = Mathematics.configure({
     throwOnError: false,
   },
 });
-const tableOfContents = TableOfContents.configure({
-  onUpdate: (items) => {
-    // Handle the updated table of contents items here
-    console.log("Table of Contents updated:", items);
-    // You might want to update some state here or trigger a re-render
-  },
-  getIndex: (level) => `${level}.`, // You can customize this if needed
-  debounceWait: 250, // Adjust this value as needed
-});
+
 const characterCount = CharacterCount.configure();
 
 export const defaultExtensions = [
