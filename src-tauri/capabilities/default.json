@@ -16,6 +16,16 @@
     "fs:allow-remove",
     "fs:allow-write-text-file",
     "fs:scope-download-recursive",
+    {
+      "identifier": "shell:allow-execute",
+      "allow": [
+        {
+          "name": "binaries/pandoc",
+          "sidecar": true,
+          "args": true
+        }
+      ]
+    },
     "fs:scope-resource-recursive",
     {
       "identifier": "fs:scope",
@@ -51,6 +61,8 @@
           "path": "/**/*"
         }
       ]
-    }
+    },
+    "shell:default",
+    "dialog:default"
   ]
 }

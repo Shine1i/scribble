@@ -15,7 +15,10 @@ import {
 } from "@/components/tailwind/ui/context-menu";
 import { fileManager } from "@/lib/managers/FileManager";
 import { useFileSystemStore } from "@/hooks/use-file-system";
-
+import { Command } from "@tauri-apps/plugin-shell";
+import { save } from "@tauri-apps/plugin-dialog";
+import { exportNote } from "@/lib/utils";
+import { toast } from "sonner";
 export default function Page() {
   const {
     fileSystem,
@@ -35,9 +38,45 @@ export default function Page() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    fileManager.initializeFileSystem().finally(async () => {
-      setFileSystem(await fileManager.retrieveFileSystem());
-    });
+    fileManager
+      .initializeFileSystem()
+      .then(() => {
+        console.log("File system initialized successfully.");
+        return fileManager.retrieveFileSystem();
+      })
+      .then((fs) => {
+        console.log("File system retrieved successfully.");
+        setFileSystem(fs);
+      })
+      .catch((error) => {
+        console.error("Error initializing or retrieving file system:", error);
+      })
+      .finally(() => {
+        console.log("File system initialization process completed.");
+      });
+  }, []);
+  useEffect(() => {
+    async function exportCurrentNote(outputFormat) {
+      const inputPath = "/home/wasim/Documents/Scribble/output.html";
+      const noteName = "MyNote"; // This should be dynamically set based on the current note
+      try {
+        const exportedPath = await exportNote(
+          inputPath,
+          noteName,
+          outputFormat,
+        );
+        if (exportedPath) {
+          console.log(`Note exported successfully to: ${exportedPath}`);
+          // You might want to update UI or state here to reflect the successful export
+        }
+      } catch (error) {
+        console.error("Failed to export note:", error);
+        // Handle error (e.g., show an error message to the user)
+      }
+    }
+
+    // Example usage:
+    exportCurrentNote("docx"); // or 'docx', 'pdf', 'txt', etc.
   }, []);
   useEffect(() => {
     if (renamingItem && inputRef.current) {
@@ -127,65 +166,3 @@ export default function Page() {
     </SidebarLayout>
   );
 }
-
-// export function TOC  () {
-//     const { tocItems, setTocItems, editorInstance } = useEditorStore();
-//
-//     console.log(tocItems)
-//
-//     const onItemClick = (e: React.MouseEvent, id: string) => {
-//         e.preventDefault();
-//
-//         if (editorInstance) {
-//             const item = tocItems.find(item => item.id === id);
-//             if (item) {
-//                 // Set focus
-//                 const { state, view } = editorInstance;
-//                 const tr = state.tr;
-//                 const pos = tr.doc.resolve(item.pos);
-//                 tr.setSelection(TextSelection.near(pos));
-//                 view.dispatch(tr);
-//                 view.focus();
-//
-//                 // Update URL
-//                 if (history.pushState) {
-//                     history.pushState(null, '', `#${id}`);
-//                 }
-//
-//                 // Scroll to element
-//                 const domNode = view.nodeDOM(item.pos) as HTMLElement;
-//                 if (domNode) {
-//                     setTimeout(() => {
-//                         domNode.scrollIntoView({ behavior: 'smooth', block: 'start' });
-//                     }, 0);
-//                 }
-//             }
-//         }
-//     };
-//     if (!editorInstance) {
-//         return null;
-//     }
-//
-//     return (
-//       <div>
-//           <div>
-//               <h3>Table of Contents</h3>
-//               {tocItems.length === 0 ? (
-//                 <p>Start editing your document to see the outline.</p>
-//               ) : (
-//                 <ul>
-//                     {tocItems.map((item) => (
-//                       <li
-//                         key={item.id}
-//                         style={{ marginLeft: `${(item.level - 1) * 20}px` }}
-//                         onClick={(e) => onItemClick(e, item.id)}
-//                       >
-//                           {item.itemIndex} {item.textContent}
-//                       </li>
-//                     ))}
-//                 </ul>
-//               )}
-//           </div>
-//       </div>
-//     );
-// };
