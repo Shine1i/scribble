@@ -56,7 +56,7 @@ export default function Page() {
       });
   }, []);
   useEffect(() => {
-    async function exportCurrentNote(outputFormat) {
+    async function exportCurrentNote(outputFormat: string) {
       const inputPath = "/home/wasim/Documents/Scribble/output.html";
       const noteName = "MyNote"; // This should be dynamically set based on the current note
       try {

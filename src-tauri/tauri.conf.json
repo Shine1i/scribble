@@ -1,12 +1,12 @@
 {
   "productName": "scribble",
   "version": "0.1.0",
-  "identifier": "com.tauri.dev",
+  "identifier": "com.scribble.dev",
   "build": {
     "frontendDist": "../out",
     "devUrl": "http://localhost:3000",
     "beforeDevCommand": "bun dev",
-    "beforeBuildCommand": "bun build"
+    "beforeBuildCommand": "bun run build"
   },
   "app": {
     "windows": [

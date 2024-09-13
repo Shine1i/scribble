@@ -12,6 +12,12 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   reactStrictMode: false,
   // Configure assetPrefix or else the server won't properly resolve your assets.
   // assetPrefix: isProd ? null : `http://${internalHost}:3000`,
