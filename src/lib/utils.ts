@@ -12,6 +12,7 @@ interface FormatMap {
   [key: string]: string;
 }
 
+// todo: better
 export async function exportNote(
   inputPath: string,
   noteName: string,
