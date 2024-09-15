@@ -60,11 +60,9 @@ const MarkdownEditor = () => {
 
   const debouncedUpdates = useDebouncedCallback(
     async (editor: EditorInstance) => {
-      const json = editor.getJSON();
       setCharsCount(editor.storage.characterCount.words());
       setEditorInstance(editor);
       setSaveStatus("Unsaved");
-
       if (editor.getText().length > 0) {
         await saveCurrentFile(editor);
       }

@@ -2,6 +2,7 @@ import { FileSystemItem } from "@/lib/interfaces/IFileInterfaces";
 import { fileManager } from "@/lib/managers/FileManager";
 import { create } from "zustand";
 import { EditorInstance } from "novel";
+import { documentDir } from "@tauri-apps/api/path";
 
 interface FileSystemStore {
   currentFilePath: string | null;
@@ -49,7 +50,7 @@ export const useFileSystemStore = create<FileSystemStore>((set, get) => ({
     try {
       await fileManager.saveFile(
         currentFilePath,
-        JSON.stringify(editorInstance.getJSON()),
+        editorInstance.storage.markdown.getMarkdown(),
       );
       set({ saveStatus: "Saved" });
     } catch (error) {

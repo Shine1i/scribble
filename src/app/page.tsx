@@ -17,8 +17,9 @@ import { fileManager } from "@/lib/managers/FileManager";
 import { useFileSystemStore } from "@/hooks/use-file-system";
 import { Command } from "@tauri-apps/plugin-shell";
 import { save } from "@tauri-apps/plugin-dialog";
-import { exportNote } from "@/lib/utils";
+import { convertMarkdownFileToHtml, exportNote } from "@/lib/utils";
 import { toast } from "sonner";
+import { documentDir } from "@tauri-apps/api/path";
 export default function Page() {
   const {
     fileSystem,
@@ -90,8 +91,12 @@ export default function Page() {
   const handleSelectChange = async (item: FileSystemItem) => {
     setCurrentFilePath(item.path);
     console.log(item.path);
-    const content = await fileManager.getFileContent(item.path);
-    editorInstance?.commands.setContent(JSON.parse(content));
+    const html = await convertMarkdownFileToHtml(
+      (await documentDir()) + "/" + item.path,
+    );
+    console.log(html, "html");
+    editorInstance?.commands.setContent(html);
+    // console.log(editorInstance?.getHTML());
   };
 
   const renderFileSystemItems = (items: FileSystemItem[]): React.ReactNode => {

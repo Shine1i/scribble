@@ -149,6 +149,11 @@ const mathematics = Mathematics.configure({
 });
 
 const characterCount = CharacterCount.configure();
+const markdownExtension = MarkdownExtension.configure({
+  html: true,
+  transformCopiedText: true,
+  transformPastedText: true,
+});
 
 export const defaultExtensions = [
   starterKit,
@@ -166,7 +171,7 @@ export const defaultExtensions = [
   mathematics,
   characterCount,
   TiptapUnderline,
-  MarkdownExtension,
+  markdownExtension,
   HighlightExtension,
   TextStyle,
   Color,
