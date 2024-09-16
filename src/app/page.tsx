@@ -83,11 +83,24 @@ export default function Page() {
     if (renamingItem && inputRef.current) {
       const timer = setTimeout(() => {
         inputRef.current?.focus();
-      }, 200);
+      }, 250);
       return () => clearTimeout(timer);
     }
   }, [renamingItem]);
+  useEffect(() => {
+    // Set the url to the server if running in Tauri. This is a Ref.
+    // Import tauri command and execute the sidecar process
+    startServer().then((r) => {
+      console.log(r);
+    });
+    console.log("running");
+  }, []);
 
+  async function startServer() {
+    const command = Command.sidecar("binaries/server");
+    const test = await command.execute();
+    console.log(test);
+  }
   const handleSelectChange = async (item: FileSystemItem) => {
     setCurrentFilePath(item.path);
     console.log(item.path);

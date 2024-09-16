@@ -8,7 +8,6 @@ import {
 } from "react";
 import { ThemeProvider, useTheme } from "next-themes";
 import { Toaster } from "sonner";
-import { Analytics } from "@vercel/analytics/react";
 import useLocalStorage from "../hooks/use-local-storage";
 
 export const AppContext = createContext<{
@@ -35,7 +34,7 @@ export default function Providers({ children }: { children: ReactNode }) {
       attribute="class"
       enableSystem
       disableTransitionOnChange
-      defaultTheme="system"
+      defaultTheme="light"
     >
       <AppContext.Provider
         value={{
@@ -46,7 +45,6 @@ export default function Providers({ children }: { children: ReactNode }) {
       >
         <ToasterProvider />
         {children}
-        <Analytics />
       </AppContext.Provider>
     </ThemeProvider>
   );

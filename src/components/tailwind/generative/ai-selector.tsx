@@ -1,12 +1,15 @@
 "use client";
 
-import { Command, CommandInput } from "@/components/tailwind/ui/command";
+import {
+  Command as Commandui,
+  CommandInput,
+} from "@/components/tailwind/ui/command";
 
 import { useCompletion } from "ai/react";
 import { ArrowUp } from "lucide-react";
 import { useEditor } from "novel";
 import { addAIHighlight } from "novel/extensions";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Markdown from "react-markdown";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
@@ -15,6 +18,7 @@ import Magic from "../ui/icons/magic";
 import { ScrollArea } from "../ui/scroll-area";
 import AICompletionCommands from "./ai-completion-command";
 import AISelectorCommands from "./ai-selector-commands";
+import { Command } from "@tauri-apps/plugin-shell";
 
 //TODO: I think it makes more sense to create a custom Tiptap extension for this functionality https://tiptap.dev/docs/editor/ai/introduction
 
@@ -29,7 +33,7 @@ export function AISelector({ onOpenChange }: AISelectorProps) {
 
   const { completion, complete, isLoading } = useCompletion({
     // id: "novel",
-    api: "http://127.0.0.1:5662/api/complete",
+    api: "http://localhost:5663/api/complete",
     onResponse: (response) => {
       if (response.status === 429) {
         toast.error("You have reached your request limit for the day.");
@@ -44,7 +48,7 @@ export function AISelector({ onOpenChange }: AISelectorProps) {
   const hasCompletion = completion.length > 0;
 
   return (
-    <Command className="w-[350px]">
+    <Commandui className="w-[350px]">
       {hasCompletion && (
         <div className="flex max-h-[400px]">
           <ScrollArea>
@@ -117,6 +121,6 @@ export function AISelector({ onOpenChange }: AISelectorProps) {
           )}
         </>
       )}
-    </Command>
+    </Commandui>
   );
 }

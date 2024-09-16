@@ -24,7 +24,8 @@
   },
   "bundle": {
     "externalBin": [
-      "binaries/pandoc"
+      "binaries/pandoc",
+      "binaries/server"
     ],
     "active": true,
     "targets": "all",

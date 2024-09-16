@@ -28,6 +28,7 @@ import hljs from "highlight.js";
 
 import { useEditorStore } from "@/hooks/use-editor-store";
 import { useFileSystemStore } from "@/hooks/use-file-system";
+import { Command } from "@tauri-apps/plugin-shell";
 
 const MarkdownEditor = () => {
   const { currentFilePath, saveCurrentFile, saveStatus, setSaveStatus } =
