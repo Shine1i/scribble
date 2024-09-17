@@ -36,4 +36,5 @@ export interface FileSystemItem {
   isSelectable: boolean;
   path: string;
   children?: FileSystemItem[];
+  lastModified?: Date;
 }

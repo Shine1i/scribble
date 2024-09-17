@@ -18,6 +18,9 @@ export async function exportNote(
   noteName: string,
   outputFormat: string,
 ): Promise<string | null> {
+  const id = toast.loading("Saving...", {
+    description: `Saving ${noteName}.${outputFormat}`,
+  });
   try {
     const formatMap: FormatMap = {
       md: "markdown",
@@ -44,13 +47,14 @@ export async function exportNote(
     const outputPath = await save(saveOptions);
 
     if (!outputPath) {
-      toast.error("Export cancelled", {
-        description: "User cancelled the export process",
+      toast.error("Save cancelled", {
+        description: `File not saved: ${noteName}.${fileExtension}`,
+        id,
       });
       return null;
     }
 
-    toast.success("Output path selected", { description: outputPath });
+    /*toast.success("Output path selected", { description: outputPath });*/
 
     const finalOutputPath = outputPath.endsWith(`.${fileExtension}`)
       ? outputPath
@@ -67,18 +71,19 @@ export async function exportNote(
       "--wrap=none",
     ];
 
-    toast.loading("Executing Pandoc command...");
     const command = Command.sidecar("binaries/pandoc", pandocArgs);
     const output = await command.execute();
 
-    toast.success("Export completed", {
-      description: `File saved: ${finalOutputPath}`,
+    toast.success("Save Completed", {
+      description: `File successfully converted and saved to: ${finalOutputPath}`,
+      id,
     });
     return finalOutputPath;
   } catch (error) {
-    toast.error("Export failed", {
+    toast.error("Save failed", {
       description:
         error instanceof Error ? error.message : "Unknown error occurred",
+      id,
     });
     throw error;
   }
@@ -87,9 +92,8 @@ export async function exportNote(
 export async function convertMarkdownFileToHtml(
   inputPath: string,
 ): Promise<string> {
+  const id = toast.loading("Converting Markdown file to HTML...");
   try {
-    toast.loading("Converting Markdown file to HTML...");
-
     const pandocArgs = [
       inputPath,
       "-f",
@@ -111,6 +115,7 @@ export async function convertMarkdownFileToHtml(
 
     toast.success("Conversion completed", {
       description: "Markdown file successfully converted to HTML",
+      id,
     });
 
     return output.stdout;
@@ -118,6 +123,7 @@ export async function convertMarkdownFileToHtml(
     toast.error("Conversion failed", {
       description:
         error instanceof Error ? error.message : "Unknown error occurred",
+      id,
     });
     throw error;
   }

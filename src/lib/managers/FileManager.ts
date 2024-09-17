@@ -5,6 +5,7 @@ import { FileOpener } from "@/lib/services/FileOpener";
 import { FileSystemInitializer } from "@/lib/services/FileSystemInitializer";
 import { FileDeleter } from "@/lib/services/FileDeleter";
 import { FileRenamer } from "@/lib/services/FileRenamer";
+import { BaseDirectory } from "@tauri-apps/plugin-fs";
 
 class FileManager {
   constructor(
@@ -20,8 +21,20 @@ class FileManager {
     await this.fileSaver.saveFile(filepath, content);
   }
 
-  async createFile(parentPath: string, fileName: string, content: any) {
-    await this.fileSystemRefresher.retrieveFileSystem();
+  async createFile(
+    baseDirectory: BaseDirectory,
+    {
+      name,
+      payload,
+    }: {
+      name: string;
+      payload: any;
+    },
+  ) {
+    return await this.fileSaver.createFile(baseDirectory, {
+      name,
+      payload,
+    });
   }
 
   async retrieveFileSystem() {

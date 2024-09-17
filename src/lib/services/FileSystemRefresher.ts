@@ -1,4 +1,4 @@
-import { BaseDirectory, readDir } from "@tauri-apps/plugin-fs";
+import { BaseDirectory, readDir, stat } from "@tauri-apps/plugin-fs";
 import {
   FileSystemItem,
   IFileSystemRefresher,
@@ -6,9 +6,14 @@ import {
 import { join } from "@tauri-apps/api/path";
 
 export class FileSystemRefresher implements IFileSystemRefresher {
-  async retrieveFileSystem(): Promise<FileSystemItem[]> {
+  async retrieveFileSystem(
+    directory?: BaseDirectory,
+  ): Promise<FileSystemItem[]> {
     try {
-      return this.processDirectory("Scribble", BaseDirectory.Document);
+      return this.processDirectory(
+        "Scribble",
+        directory || BaseDirectory.Document,
+      );
     } catch (error) {
       console.error("Failed to refresh file system:", error);
       throw new Error("Refresh operation failed");
@@ -23,18 +28,19 @@ export class FileSystemRefresher implements IFileSystemRefresher {
     const items: FileSystemItem[] = [];
 
     for (const entry of entries) {
+      const fullPath = await join(path, entry.name);
+      const fileStats = await stat(fullPath, { baseDir });
+
       const newItem: FileSystemItem = {
-        id: await join(path, entry.name),
+        id: fullPath,
         name: entry.name,
         isSelectable: true,
-        path: await join(path, entry.name),
+        path: fullPath,
+        lastModified: fileStats.mtime ? new Date(fileStats.mtime) : undefined,
       };
 
       if (entry.isDirectory) {
-        newItem.children = await this.processDirectory(
-          await join(path, entry.name),
-          baseDir,
-        );
+        newItem.children = await this.processDirectory(fullPath, baseDir);
       }
 
       items.push(newItem);

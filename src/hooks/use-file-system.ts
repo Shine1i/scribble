@@ -2,9 +2,7 @@ import { FileSystemItem } from "@/lib/interfaces/IFileInterfaces";
 import { fileManager } from "@/lib/managers/FileManager";
 import { create } from "zustand";
 import { EditorInstance } from "novel";
-import { documentDir } from "@tauri-apps/api/path";
-import { convertMarkdownFileToHtml } from "@/lib/utils";
-import { useEditorStore } from "@/hooks/use-editor-store";
+import { BaseDirectory, readDir } from "@tauri-apps/plugin-fs";
 
 interface FileSystemStore {
   currentFilePath: string | null;
@@ -20,6 +18,14 @@ interface FileSystemStore {
   setNewName: (name: string) => void;
 
   getFileSystem: () => Promise<FileSystemItem[]>;
+
+  createFile: ({
+    name,
+    payload,
+  }: {
+    name: string;
+    payload?: string;
+  }) => Promise<FileSystemItem>;
 
   saveCurrentFile: (editorInstance: EditorInstance | null) => Promise<void>;
   handleSelectChange: (
@@ -38,22 +44,12 @@ export const useFileSystemStore = create<FileSystemStore>((set, get) => ({
   renamingItem: null,
   newName: "",
 
-  setCurrentFilePath: async (path) => {
-    /*    const {editorInstance} = useEditorStore.getState()
-    const html = await convertMarkdownFileToHtml(
-      (await documentDir()) + "/" + path,
-    );
-    console.log(html, "html");
-    editorInstance?.commands.setContent(html);*/
-    set({ currentFilePath: path });
-  },
+  setCurrentFilePath: async (path) => set({ currentFilePath: path }),
   setFileSystem: (items) => set({ fileSystem: items }),
   getFileSystem: async () => {
     try {
       await fileManager.initializeFileSystem();
-      console.log("File system initialized successfully.");
       const systemItems = await fileManager.retrieveFileSystem();
-      console.log("File system retrieved successfully.");
       set({ fileSystem: systemItems });
       return systemItems;
     } catch (error) {
@@ -62,6 +58,19 @@ export const useFileSystemStore = create<FileSystemStore>((set, get) => ({
     } finally {
       console.log("File system initialization process completed.");
     }
+  },
+
+  createFile: async ({ name, payload }: { name: string; payload?: string }) => {
+    if (!name.trim()) throw new Error("Name cannot be empty");
+    if (!name.endsWith(".md")) name += ".md";
+
+    const systemItem = await fileManager.createFile(BaseDirectory.Document, {
+      name,
+      payload: payload || "",
+    });
+
+    get().getFileSystem();
+    return systemItem;
   },
 
   setSaveStatus: (status) => set({ saveStatus: status }),
