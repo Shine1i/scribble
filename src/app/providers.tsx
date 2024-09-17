@@ -9,6 +9,7 @@ import {
 import { ThemeProvider, useTheme } from "next-themes";
 import { Toaster } from "sonner";
 import useLocalStorage from "../hooks/use-local-storage";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export const AppContext = createContext<{
   font: string;
@@ -25,27 +26,26 @@ const ToasterProvider = () => {
   return <Toaster theme={theme} />;
 };
 
+export const queryClient = new QueryClient();
+
 export default function Providers({ children }: { children: ReactNode }) {
   const [font, setFont] = useLocalStorage<string>("novel__font", "Default");
 
   // @ts-ignore
   return (
-    <ThemeProvider
-      attribute="class"
-      enableSystem
-      disableTransitionOnChange
-      defaultTheme="light"
-    >
-      <AppContext.Provider
-        value={{
-          font,
-          // @ts-ignore
-          setFont,
-        }}
-      >
-        <ToasterProvider />
-        {children}
-      </AppContext.Provider>
+    <ThemeProvider attribute="class" enableSystem defaultTheme="light">
+      <QueryClientProvider client={queryClient}>
+        <AppContext.Provider
+          value={{
+            font,
+            // @ts-ignore
+            setFont,
+          }}
+        >
+          <ToasterProvider />
+          {children}
+        </AppContext.Provider>
+      </QueryClientProvider>
     </ThemeProvider>
   );
 }

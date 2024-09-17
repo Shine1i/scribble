@@ -28,7 +28,8 @@ import hljs from "highlight.js";
 
 import { useEditorStore } from "@/hooks/use-editor-store";
 import { useFileSystemStore } from "@/hooks/use-file-system";
-import { Command } from "@tauri-apps/plugin-shell";
+import { convertMarkdownFileToHtml } from "@/lib/utils";
+import { documentDir } from "@tauri-apps/api/path";
 
 const MarkdownEditor = () => {
   const { currentFilePath, saveCurrentFile, saveStatus, setSaveStatus } =
@@ -43,6 +44,22 @@ const MarkdownEditor = () => {
     setCharsCount,
     setTocItems,
   } = useEditorStore();
+
+  const convertMarkdownToHtml = async (path: string) => {
+    if (!editorInstance) return;
+
+    const html = await convertMarkdownFileToHtml(
+      (await documentDir()) + "/" + path,
+    );
+    editorInstance.commands.setContent(html);
+  };
+
+  useEffect(() => {
+    if (currentFilePath) {
+      convertMarkdownToHtml(currentFilePath);
+    }
+  }, [currentFilePath, editorInstance]);
+
   const [openNode, setOpenNode] = useState(false);
   const [openColor, setOpenColor] = useState(false);
   const [openLink, setOpenLink] = useState(false);

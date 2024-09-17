@@ -1,12 +1,4 @@
 // src/managers/FileManager.ts
-import {
-  IFileDeleter,
-  IFileOpener,
-  IFileRenamer,
-  IFileSaver,
-  IFileSystemInitializer,
-  IFileSystemRefresher,
-} from "@/lib/interfaces/IFileInterfaces";
 import { FileSaver } from "@/lib/services/FileSaver";
 import { FileSystemRefresher } from "@/lib/services/FileSystemRefresher";
 import { FileOpener } from "@/lib/services/FileOpener";
@@ -16,12 +8,12 @@ import { FileRenamer } from "@/lib/services/FileRenamer";
 
 class FileManager {
   constructor(
-    private fileSaver: IFileSaver,
-    private fileSystemRefresher: IFileSystemRefresher,
-    private fileSystemInitializer: IFileSystemInitializer,
-    private fileOpener: IFileOpener,
-    private fileDeleter: IFileDeleter,
-    private fileRenamer: IFileRenamer,
+    private fileSaver: FileSaver,
+    private fileSystemRefresher: FileSystemRefresher,
+    private fileSystemInitializer: FileSystemInitializer,
+    private fileOpener: FileOpener,
+    private fileDeleter: FileDeleter,
+    private fileRenamer: FileRenamer,
   ) {}
 
   async saveFile(filepath: string, content: any) {

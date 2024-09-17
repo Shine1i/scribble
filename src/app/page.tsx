@@ -1,186 +1,141 @@
 "use client";
-import MarkdownEditor from "@/components/tailwind/advanced-editor";
-import { SidebarLayout } from "@/components/tailwind/ui/sidebar-layout";
-
 import * as React from "react";
-import { useEffect, useRef } from "react";
-import { useEditorStore } from "@/hooks/use-editor-store";
-import { File, Folder, Tree } from "@/components/tailwind/ui/Tree";
-import { FileSystemItem } from "@/lib/interfaces/IFileInterfaces";
-import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from "@/components/tailwind/ui/context-menu";
-import { fileManager } from "@/lib/managers/FileManager";
 import { useFileSystemStore } from "@/hooks/use-file-system";
-import { Command } from "@tauri-apps/plugin-shell";
-import { save } from "@tauri-apps/plugin-dialog";
-import { convertMarkdownFileToHtml, exportNote } from "@/lib/utils";
-import { toast } from "sonner";
-import { documentDir } from "@tauri-apps/api/path";
+import { Button } from "@/components/tailwind/ui/button";
+import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import { FileIcon, ImportIcon, PlusIcon } from "lucide-react";
+import { FileSystemItem } from "@/lib/interfaces/IFileInterfaces";
+import { useRouter } from "next/navigation";
+import { Card, CardContent, CardHeader } from "@/components/tailwind/ui/card";
+import { Input } from "@/components/tailwind/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "@/components/tailwind/ui/dialog";
+import { useEditorStore } from "@/hooks/use-editor-store";
+
 export default function Page() {
+  return (
+    <main
+      className={"flex flex-col items-center justify-center w-full h-screen"}
+    >
+      <div className={"flex flex-col gap-2 max-w-screen-sm w-full"}>
+        <Notes />
+        <Button className={"w-full"}>
+          <Link href={"/markdown-editor"}>Go to Markdown Editor</Link>
+        </Button>
+      </div>
+    </main>
+  );
+}
+
+function Notes() {
+  const { getFileSystem, setCurrentFilePath } = useFileSystemStore();
+  const [search, setSearch] = React.useState("");
+  const router = useRouter();
+
   const {
-    fileSystem,
-    renamingItem,
-    setFileSystem,
-    setRenamingItem,
-    newName,
-    setNewName,
-    handleRename,
-    handleRenameSubmit,
-    setCurrentFilePath,
-    handleDelete,
-  } = useFileSystemStore();
+    data: fileSystem,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["fileSystem", search],
+    queryFn: async () => {
+      const fileSystem = await getFileSystem();
 
-  const { editorInstance } = useEditorStore();
+      return search.trim()
+        ? fileSystem.filter((item) => {
+            return item.name.toLowerCase().includes(search.toLowerCase());
+          })
+        : fileSystem;
+    },
+    refetchOnWindowFocus: false,
+  });
 
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    fileManager
-      .initializeFileSystem()
-      .then(() => {
-        console.log("File system initialized successfully.");
-        return fileManager.retrieveFileSystem();
-      })
-      .then((fs) => {
-        console.log("File system retrieved successfully.");
-        setFileSystem(fs);
-      })
-      .catch((error) => {
-        console.error("Error initializing or retrieving file system:", error);
-      })
-      .finally(() => {
-        console.log("File system initialization process completed.");
-      });
-  }, []);
-  useEffect(() => {
-    async function exportCurrentNote(outputFormat: string) {
-      const inputPath = "/home/wasim/Documents/Scribble/output.html";
-      const noteName = "MyNote"; // This should be dynamically set based on the current note
-      try {
-        const exportedPath = await exportNote(
-          inputPath,
-          noteName,
-          outputFormat,
-        );
-        if (exportedPath) {
-          console.log(`Note exported successfully to: ${exportedPath}`);
-          // You might want to update UI or state here to reflect the successful export
-        }
-      } catch (error) {
-        console.error("Failed to export note:", error);
-        // Handle error (e.g., show an error message to the user)
-      }
-    }
-
-    // Example usage:
-    exportCurrentNote("docx"); // or 'docx', 'pdf', 'txt', etc.
-  }, []);
-  useEffect(() => {
-    if (renamingItem && inputRef.current) {
-      const timer = setTimeout(() => {
-        inputRef.current?.focus();
-      }, 250);
-      return () => clearTimeout(timer);
-    }
-  }, [renamingItem]);
-  useEffect(() => {
-    // Set the url to the server if running in Tauri. This is a Ref.
-    // Import tauri command and execute the sidecar process
-    startServer().then((r) => {
-      console.log(r);
-    });
-    console.log("running");
-  }, []);
-
-  async function startServer() {
-    const command = Command.sidecar("binaries/server");
-    const test = await command.execute();
-    console.log(test);
-  }
-  const handleSelectChange = async (item: FileSystemItem) => {
-    setCurrentFilePath(item.path);
-    console.log(item.path);
-    const html = await convertMarkdownFileToHtml(
-      (await documentDir()) + "/" + item.path,
-    );
-    console.log(html, "html");
-    editorInstance?.commands.setContent(html);
-    // console.log(editorInstance?.getHTML());
+  const navigateToSystemItem = (fileSystemItem: FileSystemItem) => {
+    setCurrentFilePath(fileSystemItem.path);
+    router.push("/markdown-editor");
   };
 
-  const renderFileSystemItems = (items: FileSystemItem[]): React.ReactNode => {
-    return items.map((item) => {
-      const isRenaming = renamingItem === item.id;
-      return (
-        <ContextMenu key={item.id}>
-          <ContextMenuTrigger>
-            {item.children ? (
-              <Folder
-                key={item.id}
-                isRenaming={isRenaming}
-                folderName={item.name}
-                value={item.id}
-                rename={() => handleRenameSubmit(item)}
-                newName={newName}
-                setNewName={setNewName}
-                inputRef={inputRef}
-              >
-                {renderFileSystemItems(item.children)}
-              </Folder>
-            ) : (
-              <File
-                onClick={() => handleSelectChange(item)}
-                key={item.id}
-                value={item.id}
-              >
-                {isRenaming ? (
-                  <input
-                    ref={inputRef}
-                    value={newName}
-                    onChange={(e) => setNewName(e.target.value)}
-                    onKeyDown={async (e) => {
-                      if (e.key === "Enter") await handleRenameSubmit(item);
-                      if (e.key === "Escape") setRenamingItem(null);
-                    }}
-                    onBlur={() => handleRenameSubmit(item)}
-                  />
-                ) : (
-                  <p>{item.name}</p>
-                )}
-              </File>
-            )}
-          </ContextMenuTrigger>
-          <ContextMenuContent className="w-64 *:cursor-pointer">
-            <ContextMenuItem onSelect={() => handleDelete(item)}>
-              Delete
-            </ContextMenuItem>
-            <ContextMenuItem onSelect={() => handleRename(item)}>
-              Rename
-            </ContextMenuItem>
-          </ContextMenuContent>
-        </ContextMenu>
-      );
-    });
-  };
+  if (isError) return <div>Error</div>;
 
   return (
-    <SidebarLayout
-      navbar={false}
-      sidebar={
-        <Tree
-          className="p-2 overflow-hidden rounded-md bg-background"
-          initialExpandedItems={[]}
-          elements={fileSystem}
+    <div className={"flex flex-col gap-2"}>
+      <div className={"flex flex-row gap-2"}>
+        <Input
+          className={"bg-card text-card-foreground"}
+          value={search}
+          placeholder="Search notes..."
+          onChange={(e) => setSearch(e.target.value)}
+          type={"text"}
+        />
+        <CreateNote />
+        <ImportNote />
+      </div>
+      <Card className={"flex flex-col min-w-[200px]"}>
+        <CardHeader>
+          <p className={"font-bold"}>Recent Notes</p>
+        </CardHeader>
+        <CardContent>
+          <div className={"max-h-[500px] overflow-y-auto"}>
+            {isLoading && <p>Loading...</p>}
+            {fileSystem &&
+              fileSystem.map((systemItem, index) => (
+                <button
+                  onClick={() => navigateToSystemItem(systemItem)}
+                  className={
+                    "flex flex-row justify-between p-2 hover:bg-primary/10 rounded w-full duration-200"
+                  }
+                  key={index}
+                >
+                  <FileIcon />
+                  {systemItem.name}
+                </button>
+              ))}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+function CreateNote() {
+  return (
+    <Dialog>
+      <DialogTrigger>
+        <Button
+          variant={"outline"}
+          className={"w-full bg-card text-card-foreground"}
         >
-          {renderFileSystemItems(fileSystem)}
-        </Tree>
-      }
-    >
-      <MarkdownEditor />
-    </SidebarLayout>
+          <PlusIcon className="w-4 h-4 mr-2" />
+          Create Note
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <p>Create Note</p>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function ImportNote() {
+  return (
+    <Dialog>
+      <DialogTrigger>
+        <Button
+          variant={"outline"}
+          className={"w-full bg-card text-card-foreground"}
+        >
+          <ImportIcon className="w-4 h-4 mr-2" />
+          Import Note
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <p>Import Note</p>
+      </DialogContent>
+    </Dialog>
   );
 }

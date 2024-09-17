@@ -3,6 +3,8 @@ import { fileManager } from "@/lib/managers/FileManager";
 import { create } from "zustand";
 import { EditorInstance } from "novel";
 import { documentDir } from "@tauri-apps/api/path";
+import { convertMarkdownFileToHtml } from "@/lib/utils";
+import { useEditorStore } from "@/hooks/use-editor-store";
 
 interface FileSystemStore {
   currentFilePath: string | null;
@@ -16,6 +18,8 @@ interface FileSystemStore {
   setSaveStatus: (status: string) => void;
   setRenamingItem: (itemId: string | null) => void;
   setNewName: (name: string) => void;
+
+  getFileSystem: () => Promise<FileSystemItem[]>;
 
   saveCurrentFile: (editorInstance: EditorInstance | null) => Promise<void>;
   handleSelectChange: (
@@ -34,8 +38,32 @@ export const useFileSystemStore = create<FileSystemStore>((set, get) => ({
   renamingItem: null,
   newName: "",
 
-  setCurrentFilePath: (path) => set({ currentFilePath: path }),
+  setCurrentFilePath: async (path) => {
+    /*    const {editorInstance} = useEditorStore.getState()
+    const html = await convertMarkdownFileToHtml(
+      (await documentDir()) + "/" + path,
+    );
+    console.log(html, "html");
+    editorInstance?.commands.setContent(html);*/
+    set({ currentFilePath: path });
+  },
   setFileSystem: (items) => set({ fileSystem: items }),
+  getFileSystem: async () => {
+    try {
+      await fileManager.initializeFileSystem();
+      console.log("File system initialized successfully.");
+      const systemItems = await fileManager.retrieveFileSystem();
+      console.log("File system retrieved successfully.");
+      set({ fileSystem: systemItems });
+      return systemItems;
+    } catch (error) {
+      console.error("Error initializing or retrieving file system:", error);
+      return [];
+    } finally {
+      console.log("File system initialization process completed.");
+    }
+  },
+
   setSaveStatus: (status) => set({ saveStatus: status }),
   setRenamingItem: (itemId) => set({ renamingItem: itemId }),
   setNewName: (name) => set({ newName: name }),
