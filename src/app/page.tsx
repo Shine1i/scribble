@@ -64,7 +64,7 @@ function Notes() {
 
   const navigateToSystemItem = (fileSystemItem: FileSystemItem) => {
     setCurrentFilePath(fileSystemItem.path);
-    router.push("/markdown-editor");
+    router.push("/test");
   };
 
   return (

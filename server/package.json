@@ -1,0 +1,23 @@
+{
+  "name": "server",
+  "module": "server.ts",
+  "type": "module",
+  "scripts": {
+    "build:server": "npx tsx ./build-server.ts",
+    "package:server": "npm run build:server && pkg dist/server/server.js -o .././src-tauri/binaries/server-x86_64-unknown-linux-gnu"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "^0.0.50",
+    "@fastify/cors": "^10.0.0",
+    "ai": "^3.3.41",
+    "esbuild": "^0.23.1",
+    "fastify": "^5.0.0",
+    "pkg": "^5.8.1"
+  }
+}
