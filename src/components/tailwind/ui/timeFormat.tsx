@@ -17,22 +17,25 @@ export const TimeFormat = ({
   const [text, setText] = useState("");
 
   useEffect(() => {
-    const id = setInterval(() => {
-      setText(getRelativeTimeString(date));
-    }, 1000);
+    if (relative) {
+      const id = setInterval(() => {
+        setText(getRelativeTimeString(date));
+      }, 1000);
 
-    return () => clearInterval(id);
-  }, []);
-
-  return <time dateTime={date.toISOString()}>{text}</time>;
+      return () => clearInterval(id);
+    } else {
+      setText(date.toLocaleString(locale, dateTimeOptions));
+    }
+  }, [date]);
+  
+  return <time className={className} dateTime={date.toISOString()}>{text}</time>;
 };
 
-
+// Credit: https://www.builder.io/blog/relative-time
 export function getRelativeTimeString(
   date: Date | number,
   lang = navigator.language
 ): string {
-  // Allow dates or times to be passed
   const timeMs = typeof date === "number" ? date : date.getTime();
 
   // Get the amount of seconds between the given date and now
