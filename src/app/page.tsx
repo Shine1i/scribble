@@ -17,20 +17,27 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/tailwind/ui/dialog";
-import { DialogBody } from "next/dist/client/components/react-dev-overlay/internal/components/Dialog";
-import { DialogClose } from "@radix-ui/react-dialog";
-import { toast } from "sonner";
 import { listen, TauriEvent } from "@tauri-apps/api/event";
 import { TimeFormat } from "@/components/tailwind/ui/timeFormat";
+import { CreateNote } from "@/components/note";
 
 export default function Page() {
   return (
-    <main className={"grid place-items-center w-full h-screen"}>
+    <main
+      className={
+        "grid bg-background text-background-foreground place-items-center w-full h-screen"
+      }
+    >
       <div className={"flex flex-col gap-2 max-w-screen-sm w-full"}>
         <Notes />
-        <Button className={"w-full"}>
-          <Link href={"/markdown-editor"}>Go to Markdown Editor</Link>
-        </Button>
+        <div className={"flex flex-row gap-2"}>
+          <Button className={"w-full"}>
+            <Link href={"/markdown-editor"}>Go to Markdown Editor</Link>
+          </Button>
+          <Button className={"w-full"}>
+            <Link href={"/test"}>Go to Test</Link>
+          </Button>
+        </div>
       </div>
     </main>
   );
@@ -62,9 +69,9 @@ function Notes() {
     getFileSystem().finally(() => setLoading(false));
   }, []);
 
-  const navigateToSystemItem = (fileSystemItem: FileSystemItem) => {
+  const navigateToSystemItem = (fileSystemItem: FileSystemItem): void => {
     setCurrentFilePath(fileSystemItem.path);
-    router.push("/test");
+    router.push("/markdown-editor");
   };
 
   return (
@@ -77,7 +84,7 @@ function Notes() {
           onChange={(e) => setSearch(e.target.value)}
           type={"text"}
         />
-        <CreateNote />
+        <CreateNote onSubmit={navigateToSystemItem} />
         <ImportNote />
       </div>
       <Card className={"flex flex-col min-w-[200px]"}>
@@ -118,69 +125,6 @@ function Notes() {
         </CardContent>
       </Card>
     </div>
-  );
-}
-
-function CreateNote() {
-  const [newNoteName, setNewNoteName] = useState("");
-  const { createFile } = useFileSystemStore();
-
-  const [open, setOpen] = useState(false);
-
-  const handleCreateNote = useCallback(async () => {
-    const id = toast.loading("Creating Note...");
-    try {
-      await createFile({
-        name: newNoteName,
-      });
-      toast.success("Note created", {
-        id: id,
-      });
-      setOpen(false);
-      setNewNoteName("");
-    } catch (error) {
-      toast.error("Failed to create note", {
-        description: (error as Error)?.message,
-        id: id,
-      });
-    }
-  }, [newNoteName]);
-
-  return (
-    <Dialog open={open} onOpenChange={(open) => setOpen(open)}>
-      <DialogTrigger asChild>
-        <Button variant={"outline"} className={"bg-card text-card-foreground"}>
-          <PlusIcon className="w-4 h-4 mr-2" />
-          Create Note
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Create New File</DialogTitle>
-        </DialogHeader>
-        <DialogBody>
-          <Input
-            value={newNoteName}
-            onChange={(e) => setNewNoteName(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                handleCreateNote();
-              }
-            }}
-            type={"text"}
-            placeholder={"Note name"}
-          />
-        </DialogBody>
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button variant={"outline"}>Cancel</Button>
-          </DialogClose>
-          <Button variant={"default"} onClick={handleCreateNote}>
-            Create
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
   );
 }
 
@@ -238,37 +182,35 @@ function ImportNote() {
         <DialogHeader>
           <DialogTitle>Import Note</DialogTitle>
         </DialogHeader>
-        <DialogBody>
-          <div className="grid gap-4 py-4">
-            <label
-              htmlFor="file-upload"
-              className="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-            >
-              <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                <FileText className="w-10 h-10 mb-3 text-gray-400" />
-                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                  <span className="font-semibold">Click to upload</span> or drag
-                  and drop
-                </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
-                  Markdown or text files only
-                </p>
-              </div>
-              <Input
-                id="file-upload"
-                type="file"
-                className="hidden"
-                onChange={handleFileChange}
-                accept=".md,.html,.htm,.tex,.docx,.odt,.epub,.textile,.rst,.adoc,.asc,.org,.mediawiki,.wiki,.muse,.opml,.dbk,.jats,.tei,.man,.md,.markdown,.gfm,.mmd,.json"
-              />
-            </label>
-            {file && (
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                Selected file: {file.name}
+        <div className="grid gap-4 py-4">
+          <label
+            htmlFor="file-upload"
+            className="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+          >
+            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+              <FileText className="w-10 h-10 mb-3 text-gray-400" />
+              <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                <span className="font-semibold">Click to upload</span> or drag
+                and drop
               </p>
-            )}
-          </div>
-        </DialogBody>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                Markdown or text files only
+              </p>
+            </div>
+            <Input
+              id="file-upload"
+              type="file"
+              className="hidden"
+              onChange={handleFileChange}
+              accept=".md,.html,.htm,.tex,.docx,.odt,.epub,.textile,.rst,.adoc,.asc,.org,.mediawiki,.wiki,.muse,.opml,.dbk,.jats,.tei,.man,.md,.markdown,.gfm,.mmd,.json"
+            />
+          </label>
+          {file && (
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              Selected file: {file.name}
+            </p>
+          )}
+        </div>
       </DialogContent>
     </Dialog>
   );

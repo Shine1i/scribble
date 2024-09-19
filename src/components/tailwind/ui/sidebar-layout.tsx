@@ -8,6 +8,11 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from "./context-menu";
+import { useRouter } from "next/navigation";
+import { useFileSystemStore } from "@/hooks/use-file-system";
+import { FileSystemItem } from "@/lib/interfaces/IFileInterfaces";
+import { Dialog, DialogContent } from "./dialog";
+import { CreateNoteContent } from "@/components/note";
 
 function OpenMenuIcon() {
   return (
@@ -34,22 +39,30 @@ export function SidebarLayout({
   sidebar: React.ReactNode;
 }>) {
   let [showSidebar, setShowSidebar] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState<string>("");
 
   // @ts-ignore
   return (
     <div className="relative isolate flex min-h-svh w-full max-lg:flex-col bg-background">
       {/* Sidebar on desktop */}
-      <ContextMenu>
-        <ContextMenuTrigger>
-          <div className="fixed inset-y-0 left-0 w-64 max-lg:hidden">
-            {sidebar}
-          </div>
-        </ContextMenuTrigger>
-        <ContextMenuContent className="w-64 *:cursor-pointer">
-          <ContextMenuItem>New File</ContextMenuItem>
-          <ContextMenuItem>New Folder</ContextMenuItem>
-        </ContextMenuContent>
-      </ContextMenu>
+      <Dialog open={!!dialogOpen} onOpenChange={() => setDialogOpen("")}>
+        <ContextMenu>
+          <ContextMenuTrigger>
+            <div className="fixed inset-y-0 left-0 w-64 max-lg:hidden">
+              {sidebar}
+            </div>
+          </ContextMenuTrigger>
+          <ContextMenuContent className="w-64 *:cursor-pointer">
+            <ContextMenuItem onClick={() => setDialogOpen("new-file")}>
+              New File
+            </ContextMenuItem>
+            <ContextMenuItem>New Folder</ContextMenuItem>
+          </ContextMenuContent>
+        </ContextMenu>
+        <DialogContent>
+          {dialogOpen === "new-file" && <CreateNoteContent onSubmit={() => setDialogOpen("")} />}
+        </DialogContent>
+      </Dialog>
       {/* Navbar on mobile */}
       <header className="flex items-center px-4 lg:hidden">
         <div className="py-2.5">

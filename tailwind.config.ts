@@ -17,45 +17,28 @@ const config: Config = {
       },
     },
     extend: {
-      typography: ({ theme }) => ({
+      typography: ({ theme }: { theme: (path: string) => string }) => ({
         gruvbox: {
           css: {
-            '--tw-prose-body': '#3c3836', // fg
-            '--tw-prose-headings': '#9d0006', // fg0
-            '--tw-prose-lead': '#504945', // fg2
-            '--tw-prose-links': '#076678', // blue
-            '--tw-prose-bold': '#282828', // fg0
-            '--tw-prose-counters': '#7c6f64', // fg4
-            '--tw-prose-bullets': '#928374', // gray
-            '--tw-prose-hr': '#d5c4a1', // bg2
-            '--tw-prose-quotes': '#504945', // fg2
-            '--tw-prose-quote-borders': '#bdae93', // bg3
-            '--tw-prose-captions': '#665c54', // fg3
-            '--tw-prose-code': '#9d0006', // red
-            '--tw-prose-pre-code': '#3c3836', // bg0_h
-            '--tw-prose-pre-bg': '#f2e5bc', // fg
-            '--tw-prose-th-borders': '#d5c4a1', // bg2
-            '--tw-prose-td-borders': '#ebdbb2', // bg1
-            '--tw-prose-invert-body': '#ebdbb2', // bg1
-            '--tw-prose-invert-headings': '#fbf1c7', // bg0_h
-            '--tw-prose-invert-lead': '#d5c4a1', // bg2
-            '--tw-prose-invert-links': '#83a598', // blue
-            '--tw-prose-invert-bold': '#fbf1c7', // bg0_h
-            '--tw-prose-invert-counters': '#bdae93', // bg3
-            '--tw-prose-invert-bullets': '#928374', // gray
-            '--tw-prose-invert-hr': '#504945', // fg2
-            '--tw-prose-invert-quotes': '#d5c4a1', // bg2
-            '--tw-prose-invert-quote-borders': '#665c54', // fg3
-            '--tw-prose-invert-captions': '#bdae93', // bg3
-            '--tw-prose-invert-code': '#fb4934', // bright red
-            '--tw-prose-invert-pre-code': '#282828', // fg0
-            '--tw-prose-invert-pre-bg': '#ebdbb2', // bg1
-            '--tw-prose-invert-th-borders': '#504945', // fg2
-            '--tw-prose-invert-td-borders': '#3c3836', // fg
+            '--tw-prose-body': theme('colors.gruvbox-fg'), 
+            '--tw-prose-headings': theme('colors.gruvbox-heading'),
+            '--tw-prose-lead': theme('colors.gruvbox-lead'),
+            '--tw-prose-links': theme('colors.gruvbox-link'),
+            '--tw-prose-bold': theme('colors.gruvbox-bold'),
+            '--tw-prose-counters': theme('colors.gruvbox-counter'),
+            '--tw-prose-bullets': theme('colors.gruvbox-bullet'),
+            '--tw-prose-hr': theme('colors.gruvbox-hr'),
+            '--tw-prose-quotes': theme('colors.gruvbox-quote'),
+            '--tw-prose-quote-borders': theme('colors.gruvbox-quote-border'),
+            '--tw-prose-captions': theme('colors.gruvbox-caption'),
+            '--tw-prose-code': theme('colors.gruvbox-inline-code'),
+            '--tw-prose-pre-code': theme('colors.gruvbox-pre-code'),
+            '--tw-prose-pre-bg': theme('colors.gruvbox-pre-bg'),
+            '--tw-prose-th-borders': theme('colors.gruvbox-th-border'),
+            '--tw-prose-td-borders': theme('colors.gruvbox-td-border'),
           },
         },
       }),
-      
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -90,6 +73,22 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        'gruvbox-fg': 'hsl(var(--gruvbox-fg))',
+        'gruvbox-heading': 'hsl(var(--gruvbox-heading))',
+        'gruvbox-lead': 'hsl(var(--gruvbox-lead))',
+        'gruvbox-link': 'hsl(var(--gruvbox-link))',
+        'gruvbox-bold': 'hsl(var(--gruvbox-bold))',
+        'gruvbox-counter': 'hsl(var(--gruvbox-counter))',
+        'gruvbox-bullet': 'hsl(var(--gruvbox-bullet))',
+        'gruvbox-hr': 'hsl(var(--gruvbox-hr))',
+        'gruvbox-quote': 'hsl(var(--gruvbox-quote))',
+        'gruvbox-quote-border': 'hsl(var(--gruvbox-quote-border))',
+        'gruvbox-caption': 'hsl(var(--gruvbox-caption))',
+        'gruvbox-inline-code': 'hsl(var(--gruvbox-inline-code))',
+        'gruvbox-pre-code': 'hsl(var(--gruvbox-pre-code))',
+        'gruvbox-pre-bg': 'hsl(var(--gruvbox-pre-bg))',
+        'gruvbox-th-border': 'hsl(var(--gruvbox-th-border))',
+        'gruvbox-td-border': 'hsl(var(--gruvbox-td-border))',
       },
       borderRadius: {
         lg: "var(--radius)",

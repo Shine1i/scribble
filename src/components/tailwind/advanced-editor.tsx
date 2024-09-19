@@ -135,7 +135,7 @@ const MarkdownEditor = () => {
               handleImageDrop(view, event, moved, uploadFn),
             attributes: {
               class:
-                "prose prose-h2:text-[var(--tw-prose-h2)] prose-h3:text-[var(--tw-prose-h3)] prose-h4:text-[var(--tw-prose-h4)] prose-h5:text-[var(--tw-prose-h5)]  prose-gruvbox dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full",
+                "prose prose-gruvbox prose-h2:text-[var(--tw-prose-headings)] prose-h3:text-[var(--tw-prose-headings)] prose-h4:text-[var(--tw-prose-headings)] prose-h5:text-[var(--tw-prose-headings)] prose-headings:font-title font-default focus:outline-none max-w-full",
             },
           }}
           onUpdate={({ editor }) => {

@@ -17,6 +17,9 @@ import { useFileSystemStore } from "@/hooks/use-file-system";
 import { Command } from "@tauri-apps/plugin-shell";
 import { convertMarkdownFileToHtml, exportNote } from "@/lib/utils";
 import { documentDir } from "@tauri-apps/api/path";
+import { Button } from "@/components/tailwind/ui/button";
+import { PlusIcon } from "lucide-react";
+import { CreateNote } from "@/components/note";
 
 export default function Page() {
   const {
@@ -40,8 +43,9 @@ export default function Page() {
   useEffect(() => {
     getFileSystem();
   }, []);
+
   useEffect(() => {
-    async function exportCurrentNote(outputFormat: string) {
+    /*     async function exportCurrentNote(outputFormat: string) {
       const inputPath = "/home/wasim/Documents/Scribble/output.html";
       const noteName = "MyNote"; // This should be dynamically set based on the current note
       try {
@@ -61,7 +65,7 @@ export default function Page() {
     }
 
     // Example usage:
-    exportCurrentNote("docx"); // or 'docx', 'pdf', 'txt', etc.
+    exportCurrentNote("docx"); // or 'docx', 'pdf', 'txt', etc. */
   }, []);
   useEffect(() => {
     if (renamingItem && inputRef.current) {
@@ -149,13 +153,21 @@ export default function Page() {
     <SidebarLayout
       navbar={false}
       sidebar={
-        <Tree
-          className="p-2 overflow-hidden rounded-md bg-background"
-          initialExpandedItems={[]}
-          elements={fileSystem}
-        >
-          {renderFileSystemItems(fileSystem)}
-        </Tree>
+        <div className={"flex flex-col p-2 h-full gap-2"}>
+          <Tree
+            className="h-0 grow"
+            initialExpandedItems={[]}
+            elements={fileSystem}
+          >
+            {renderFileSystemItems(fileSystem)}
+          </Tree>
+          <CreateNote onSubmit={handleSelectChange}>
+            <Button size={"icon"} className={"w-full flex flex-row gap-2"}>
+              <PlusIcon />
+              Note
+            </Button>
+          </CreateNote>
+        </div>
       }
     >
       <MarkdownEditor />

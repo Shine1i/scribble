@@ -30,7 +30,7 @@ export default function Providers({ children }: { children: ReactNode }) {
 
   // @ts-ignore
   return (
-    <ThemeProvider attribute="class" enableSystem defaultTheme="light">
+    <ThemeProvider attribute="class" enableSystem defaultTheme="system">
       <AppContext.Provider
         value={{
           font,
