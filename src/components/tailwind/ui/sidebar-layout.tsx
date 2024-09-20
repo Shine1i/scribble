@@ -12,7 +12,9 @@ import { useRouter } from "next/navigation";
 import { useFileSystemStore } from "@/hooks/use-file-system";
 import { FileSystemItem } from "@/lib/interfaces/IFileInterfaces";
 import { Dialog, DialogContent } from "./dialog";
-import { CreateNoteContent } from "@/components/note";
+import { CreateNote, CreateNoteContent } from "@/components/note";
+import { Button } from "@/components/tailwind/ui/button";
+import { PlusIcon } from "lucide-react";
 
 function OpenMenuIcon() {
   return (
@@ -60,7 +62,9 @@ export function SidebarLayout({
           </ContextMenuContent>
         </ContextMenu>
         <DialogContent>
-          {dialogOpen === "new-file" && <CreateNoteContent onSubmit={() => setDialogOpen("")} />}
+          {dialogOpen === "new-file" && (
+            <CreateNoteContent onSubmit={() => setDialogOpen("")} />
+          )}
         </DialogContent>
       </Dialog>
       {/* Navbar on mobile */}
@@ -88,6 +92,15 @@ export function SidebarLayout({
           <div className="mx-auto w-full h-full">{children}</div>
         </div>
       </main>
+      <CreateNote>
+        <Button
+          size={"icon"}
+          variant={"ghost"}
+          className={"rounded-none h-8 w-8"}
+        >
+          <PlusIcon className={"size-5"} />
+        </Button>
+      </CreateNote>
     </div>
   );
 }

@@ -10,7 +10,7 @@ import React, {
   useState,
 } from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
-import { FileIcon, FolderIcon, FolderOpenIcon } from "lucide-react";
+import { FileIcon, FileText, FolderIcon, FolderOpenIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "./scroll-area";
@@ -193,7 +193,7 @@ const TreeIndicator = forwardRef<
       dir={direction}
       ref={ref}
       className={cn(
-        "h-full w-px bg-muted absolute left-1.5 rtl:right-1.5 py-3 rounded-md hover:bg-slate-300 duration-300 ease-in-out",
+        "h-full w-px bg-gruvbox-td-border absolute left-1.5 rtl:right-1.5 py-3 rounded-md hover:bg-slate-300 duration-300 ease-in-out",
         className,
       )}
       {...props}
@@ -272,8 +272,12 @@ const Folder = forwardRef<
           onClick={() => !isRenaming && handleExpand(value)}
         >
           {expandedItems?.includes(value)
-            ? (openIcon ?? <FolderOpenIcon className="size-4" />)
-            : (closeIcon ?? <FolderIcon className="size-4" />)}
+            ? (openIcon ?? (
+                <FolderOpenIcon className="size-4 ill-white stroke-white dark:fill-white dark:stroke-white" />
+              ))
+            : (closeIcon ?? (
+                <FolderIcon className="size-4 fill-white stroke-white dark:fill-white dark:stroke-white" />
+              ))}
           <div className="flex-grow">
             {isRenaming ? (
               <input
@@ -440,7 +444,7 @@ const File = forwardRef<
     const { direction, selectedId, selectItem } = useTree();
     const isSelected = isSelect ?? selectedId === value;
     return (
-      <AccordionPrimitive.Item value={value} className="relative">
+      <AccordionPrimitive.Item value={value} className="relative rounded-none">
         <AccordionPrimitive.Trigger
           ref={ref}
           {...props}
@@ -448,9 +452,10 @@ const File = forwardRef<
           disabled={!isSelectable}
           aria-label="File"
           className={cn(
-            "flex items-center bg-red- p-1 w-full gap-1 cursor-pointer text-sm pr-1 rtl:pl-1 rtl:pr-0 rounded-md  duration-200 ease-in-out",
+            "flex items-center bg-red- p-1 w-full gap-1 cursor-pointer hover:bg-accent  text-sm pr-1 rtl:pl-1 rtl:pr-0 rounded-none  duration-200 ease-in-out",
             {
-              "bg-muted": isSelected && isSelectable,
+              "bg-muted border-r-2 border-gruvbox-heading":
+                isSelected && isSelectable,
             },
             isSelectable ? "cursor-pointer" : "opacity-50 cursor-not-allowed",
             className,
@@ -460,7 +465,7 @@ const File = forwardRef<
             if (onClick) onClick(value); // Add this line
           }}
         >
-          {fileIcon ?? <FileIcon className="size-4" />}
+          {fileIcon ?? <FileText className="size-4" />}
           {children}
         </AccordionPrimitive.Trigger>
       </AccordionPrimitive.Item>

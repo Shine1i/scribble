@@ -23,11 +23,6 @@
           "name": "binaries/pandoc",
           "sidecar": true,
           "args": true
-        },
-        {
-          "name": "binaries/server",
-          "sidecar": true,
-          "args": true
         }
       ]
     },

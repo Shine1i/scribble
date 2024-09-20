@@ -4,7 +4,7 @@
   "scripts": {
     "start": "node --env-file=.env ./dist/server/server.js",
     "build:server": "npx tsx ./build-server.ts",
-    "package:server": "npm run build:server && pkg dist/server/server.js -o .././src-tauri/binaries/server-x86_64-unknown-linux-gnu"
+    "package:server": "npm run build:server && pkg dist/server/server.js --debug -o .././src-tauri/binaries/server-x86_64-unknown-linux-gnu"
   },
   "devDependencies": {
     "@types/bun": "latest"

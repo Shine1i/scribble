@@ -21,6 +21,7 @@ import {
   UpdatedImage,
   Youtube,
 } from "novel/extensions";
+
 import { UploadImagesPlugin } from "novel/plugins";
 
 import { cx } from "class-variance-authority";

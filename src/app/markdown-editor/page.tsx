@@ -18,8 +18,23 @@ import { Command } from "@tauri-apps/plugin-shell";
 import { convertMarkdownFileToHtml, exportNote } from "@/lib/utils";
 import { documentDir } from "@tauri-apps/api/path";
 import { Button } from "@/components/tailwind/ui/button";
-import { PlusIcon } from "lucide-react";
+import { ListTree, PlusIcon } from "lucide-react";
 import { CreateNote } from "@/components/note";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/tailwind/ui/dropdown-menu";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/tailwind/ui/tabs";
+import { ToC } from "@/components/tailwind/ui/toc";
 
 export default function Page() {
   const {
@@ -35,8 +50,8 @@ export default function Page() {
     setCurrentFilePath,
     handleDelete,
   } = useFileSystemStore();
-
-  const { editorInstance } = useEditorStore();
+  const MemorizedToC = React.memo(ToC);
+  const { editorInstance, tocItems } = useEditorStore();
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -75,6 +90,7 @@ export default function Page() {
       return () => clearTimeout(timer);
     }
   }, [renamingItem]);
+
   useEffect(() => {
     // Set the url to the server if running in Tauri. This is a Ref.
     // Import tauri command and execute the sidecar process
@@ -95,6 +111,7 @@ export default function Page() {
   };
 
   const renderFileSystemItems = (items: FileSystemItem[]): React.ReactNode => {
+    if (!editorInstance) return null;
     return items.map((item) => {
       const isRenaming = renamingItem === item.id;
       return (
@@ -153,20 +170,74 @@ export default function Page() {
     <SidebarLayout
       navbar={false}
       sidebar={
-        <div className={"flex flex-col p-2 h-full gap-2"}>
-          <Tree
-            className="h-0 grow"
-            initialExpandedItems={[]}
-            elements={fileSystem}
-          >
-            {renderFileSystemItems(fileSystem)}
-          </Tree>
-          <CreateNote onSubmit={handleSelectChange}>
-            <Button size={"icon"} className={"w-full flex flex-row gap-2"}>
-              <PlusIcon />
-              Note
-            </Button>
-          </CreateNote>
+        <div className={"h-full"}>
+          <Tabs defaultValue="files" className="w-full h-full">
+            <TabsList className={"w-full"}>
+              <TabsTrigger className={"w-full"} value="files">
+                Files
+              </TabsTrigger>
+              <TabsTrigger className={"w-full"} value="outlines">
+                Outlines
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent className={"h-full relative"} value="files">
+              <Tree
+                className="h-full p-2 "
+                initialExpandedItems={[]}
+                elements={fileSystem}
+              >
+                {renderFileSystemItems(fileSystem)}
+              </Tree>
+              <div
+                className={
+                  "flex items-center absolute bottom-12 w-full justify-between"
+                }
+              >
+                <CreateNote>
+                  <Button
+                    size={"icon"}
+                    variant={"ghost"}
+                    className={"rounded-none h-8 w-8"}
+                  >
+                    <PlusIcon className={"size-5"} />
+                  </Button>
+                </CreateNote>
+                <DropdownMenu>
+                  <DropdownMenuTrigger
+                    className={
+                      "text-sm text-muted-foreground hover:text-foreground"
+                    }
+                  >
+                    Synced at 14:27:15
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className={"w-[200px]"}>
+                    <DropdownMenuLabel>NextCloud</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>Sync Now</DropdownMenuItem>
+                    <DropdownMenuItem>Logs</DropdownMenuItem>
+                    <DropdownMenuItem>Settings</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <Button
+                  size={"icon"}
+                  variant={"ghost"}
+                  className={"rounded-none h-8 w-8"}
+                >
+                  <ListTree className={"size-5"} />
+                </Button>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="outlines">
+              <div className="sidebar-options">
+                <div className="label-large">Table of contents</div>
+                <div className="table-of-contents">
+                  <MemorizedToC editor={editorInstance} items={tocItems} />
+                </div>
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
       }
     >

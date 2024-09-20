@@ -30,6 +30,10 @@ import { useEditorStore } from "@/hooks/use-editor-store";
 import { useFileSystemStore } from "@/hooks/use-file-system";
 import { convertMarkdownFileToHtml } from "@/lib/utils";
 import { documentDir } from "@tauri-apps/api/path";
+import {
+  getHierarchicalIndexes,
+  TableOfContents,
+} from "@tiptap-pro/extension-table-of-contents";
 
 const MarkdownEditor = () => {
   const { currentFilePath, saveCurrentFile, saveStatus, setSaveStatus } =
@@ -64,7 +68,18 @@ const MarkdownEditor = () => {
   const [openColor, setOpenColor] = useState(false);
   const [openLink, setOpenLink] = useState(false);
   const [openAI, setOpenAI] = useState(false);
-  const extensions = [...defaultExtensions, slashCommand];
+  const extensions = [
+    ...defaultExtensions,
+    slashCommand,
+    TableOfContents.configure({
+      getIndex: getHierarchicalIndexes,
+      onUpdate(content) {
+        console.log("updates");
+        console.log(content);
+        setTocItems(content);
+      },
+    }),
+  ];
   //Apply Codeblock Highlighting on the HTML from editor.getHTML()
   const highlightCodeblocks = (content: string) => {
     const doc = new DOMParser().parseFromString(content, "text/html");

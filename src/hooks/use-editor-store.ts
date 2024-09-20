@@ -1,5 +1,6 @@
 import type { EditorInstance, JSONContent } from "novel";
 import { create } from "zustand";
+import { TableOfContentData } from "@tiptap-pro/extension-table-of-contents";
 
 export interface ToCItem {
   id: string;
@@ -13,12 +14,12 @@ export interface EditorState {
   editorContent: JSONContent | null;
   charsCount: number | undefined;
   editorInstance: EditorInstance | null;
-  tocItems: ToCItem[];
+  tocItems: TableOfContentData;
 
   setEditorContent: (content: JSONContent | null) => void;
   setCharsCount: (count: number | undefined) => void;
   setEditorInstance: (instance: EditorInstance | null) => void;
-  setTocItems: (items: ToCItem[]) => void;
+  setTocItems: (items: TableOfContentData) => void;
 }
 
 export const useEditorStore = create<EditorState>((set) => ({
