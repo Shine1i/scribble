@@ -4,7 +4,6 @@ import {
   CodeBlockLowlight,
   Color,
   CustomKeymap,
-  GlobalDragHandle,
   HighlightExtension,
   HorizontalRule,
   MarkdownExtension,
@@ -177,5 +176,4 @@ export const defaultExtensions = [
   TextStyle,
   Color,
   CustomKeymap,
-  GlobalDragHandle,
 ];

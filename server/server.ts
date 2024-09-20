@@ -22,14 +22,16 @@ fastify.get("/", async (request, reply) => {
 });
 
 fastify.post("/api/complete", async (request, reply) => {
-  const { prompt, option, command } = await request.body as {
+  const { prompt, option, command } = (await request.body) as {
     prompt: string;
     option: string;
     command: string;
   };
 
-  if (!prompt || !option || !command) {
-    return reply.status(400).send({ success: false, message: "Missing prompt, option, or command" });
+  if (!prompt || !option) {
+    return reply
+      .status(400)
+      .send({ success: false, message: "Missing prompt, option, or command" });
   }
 
   const messages = match(option)
@@ -65,7 +67,7 @@ fastify.post("/api/complete", async (request, reply) => {
         role: "system",
         content:
           "You are an AI writing assistant that shortens existing text. " +
-          "Use Markdown formatting when appropriate.",
+          "Use Markdown formatting when appropriate. Answer only with the content that needs to be changed",
       },
       {
         role: "user",
