@@ -4,6 +4,7 @@ import {
   IFileSystemRefresher,
 } from "@/lib/interfaces/IFileInterfaces";
 import { join } from "@tauri-apps/api/path";
+import { convertFilenameToContentType } from "../convertTypes";
 
 export class FileSystemRefresher implements IFileSystemRefresher {
   async retrieveFileSystem(
@@ -37,7 +38,8 @@ export class FileSystemRefresher implements IFileSystemRefresher {
         isSelectable: true,
         path: fullPath,
         lastModified: fileStats.mtime ? new Date(fileStats.mtime) : undefined,
-      };
+        contentType: convertFilenameToContentType(entry.name),
+      }
 
       if (entry.isDirectory) {
         newItem.children = await this.processDirectory(fullPath, baseDir);

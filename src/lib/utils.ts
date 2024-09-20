@@ -12,7 +12,6 @@ interface FormatMap {
   [key: string]: string;
 }
 
-// todo: better
 export async function exportNote(
   inputPath: string,
   noteName: string,
@@ -53,8 +52,6 @@ export async function exportNote(
       });
       return null;
     }
-
-    /*toast.success("Output path selected", { description: outputPath });*/
 
     const finalOutputPath = outputPath.endsWith(`.${fileExtension}`)
       ? outputPath

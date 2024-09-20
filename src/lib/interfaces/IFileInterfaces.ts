@@ -37,4 +37,5 @@ export interface FileSystemItem {
   path: string;
   children?: FileSystemItem[];
   lastModified?: Date;
+  contentType?: string;
 }
