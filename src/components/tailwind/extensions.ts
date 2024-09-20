@@ -37,7 +37,7 @@ const tiptapLink = TiptapLink.configure({
     ),
   },
 });
-
+1;
 const tiptapImage = TiptapImage.extend({
   addProseMirrorPlugins() {
     return [
