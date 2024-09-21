@@ -137,7 +137,7 @@ const MarkdownEditor = () => {
         <EditorContent
           initialContent={editorContent}
           extensions={extensions}
-          immediatelyRender={false}
+          immediatelyRender={true}
           className="relative min-h-[500px] w-full bg-card h-full sm:mb-[calc(20vh)] sm:rounded-lg  sm:shadow-lg"
           editorProps={{
             //@ts-ignore

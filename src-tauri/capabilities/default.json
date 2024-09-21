@@ -15,6 +15,10 @@
     "fs:allow-read-dir",
     "fs:allow-remove",
     "fs:allow-write-text-file",
+    "clipboard-manager:allow-read-image",
+    "clipboard-manager:allow-write-image",
+    "clipboard-manager:allow-read-text",
+    "clipboard-manager:allow-write-text",
     "fs:scope-download-recursive",
     {
       "identifier": "shell:allow-execute",
@@ -63,6 +67,7 @@
       ]
     },
     "shell:default",
-    "dialog:default"
+    "dialog:default",
+    "clipboard-manager:default"
   ]
 }

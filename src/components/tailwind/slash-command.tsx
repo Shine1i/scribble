@@ -15,7 +15,8 @@ import {
 } from "lucide-react";
 import { Command, createSuggestionItems, renderItems } from "novel/extensions";
 import { uploadFn } from "./image-upload";
-
+import { open } from "@tauri-apps/plugin-dialog";
+import { readTextFile } from "@tauri-apps/plugin-fs";
 export const suggestionItems = createSuggestionItems([
   {
     title: "Send Feedback",
@@ -136,20 +137,46 @@ export const suggestionItems = createSuggestionItems([
     description: "Upload an image from your computer.",
     searchTerms: ["photo", "picture", "media"],
     icon: <ImageIcon size={18} />,
-    command: ({ editor, range }) => {
+    command: async ({ editor, range }) => {
       editor.chain().focus().deleteRange(range).run();
       // upload image
-      const input = document.createElement("input");
-      input.type = "file";
-      input.accept = "image/*";
-      input.onchange = async () => {
-        if (input.files?.length) {
-          const file = input.files[0];
-          const pos = editor.view.state.selection.from;
-          uploadFn(file, editor.view, pos);
+      try {
+        // Open Tauri file dialog
+        const selected = await open({
+          multiple: false,
+          directory: false,
+          filters: [
+            {
+              name: "Image",
+              extensions: ["png", "jpg", "jpeg", "gif", "webp"],
+            },
+          ],
+        });
+
+        if (selected === null) {
+          // User cancelled the dialog
+          return;
         }
-      };
-      input.click();
+
+        // Read the file content
+        const fileContent = await readTextFile(selected as string);
+
+        // Create a File object
+        const fileName = selected.split("/").pop() || "image";
+        const fileType = fileName.split(".").pop() || "png";
+        const file = new File([fileContent], fileName, {
+          type: `image/${fileType}`,
+        });
+
+        // Get the current cursor position
+        const pos = editor.view.state.selection.from;
+
+        // Upload the image
+        uploadFn(file, editor.view, pos);
+      } catch (error) {
+        console.error("Error selecting or uploading image:", error);
+        // You might want to show an error message to the user here
+      }
     },
   },
   {
