@@ -4,7 +4,7 @@ import {
   IFileSystemRefresher,
 } from "@/lib/interfaces/IFileInterfaces";
 import { join } from "@tauri-apps/api/path";
-import { convertFilenameToContentType } from "../convertTypes";
+import { convertFilenameToContentType } from "../../convertTypes";
 
 export class FileSystemRefresher implements IFileSystemRefresher {
   async retrieveFileSystem(

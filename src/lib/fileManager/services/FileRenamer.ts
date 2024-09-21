@@ -1,6 +1,6 @@
 // FileRenamer.ts
 import { BaseDirectory, rename } from "@tauri-apps/plugin-fs";
-import { IFileRenamer } from "../interfaces/IFileInterfaces";
+import { IFileRenamer } from "../types";
 
 export class FileRenamer implements IFileRenamer {
   async renameFile(oldPath: string, newPath: string): Promise<void> {

@@ -1,6 +1,6 @@
 import { BaseDirectory, writeTextFile } from "@tauri-apps/plugin-fs";
-import { FileSystemItem, IFileSaver } from "@/lib/interfaces/IFileInterfaces";
 import { join } from "@tauri-apps/api/path";
+import { FileSystemItem, IFileSaver } from "../types";
 
 export class FileSaver implements IFileSaver {
   async saveFile(filePath: string, content: any): Promise<void> {

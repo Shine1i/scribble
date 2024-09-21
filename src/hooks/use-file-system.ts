@@ -1,19 +1,26 @@
-import { FileSystemItem } from "@/lib/interfaces/IFileInterfaces";
-import { fileManager } from "@/lib/managers/FileManager";
 import { create } from "zustand";
 import { EditorInstance } from "novel";
 import { BaseDirectory, readDir } from "@tauri-apps/plugin-fs";
+import { FileSystemItem } from "@/lib/fileManager/types";
+import { fileManager } from "@/lib/fileManager";
+import { useEditorStore } from "./use-editor-store";
+import { convertMarkdownFileToHtml } from "@/lib/utils";
+import { documentDir } from "@tauri-apps/api/path";
+
+export enum SaveStatus {
+  Saved = "Saved",
+  Unsaved = "Unsaved",
+}
 
 interface FileSystemStore {
   currentFilePath: string | null;
   fileSystem: FileSystemItem[];
-  saveStatus: string;
+  saveStatus: SaveStatus;
   renamingItem: string | null;
   newName: string;
 
-  setCurrentFilePath: (path: string | null) => void;
   setFileSystem: (items: FileSystemItem[]) => void;
-  setSaveStatus: (status: string) => void;
+  setSaveStatus: (status: SaveStatus) => void;
   setRenamingItem: (itemId: string | null) => void;
   setNewName: (name: string) => void;
 
@@ -27,11 +34,8 @@ interface FileSystemStore {
     payload?: string;
   }) => Promise<FileSystemItem>;
 
-  saveCurrentFile: (editorInstance: EditorInstance | null) => Promise<void>;
-  handleSelectChange: (
-    item: FileSystemItem,
-    editorInstance: EditorInstance | null,
-  ) => Promise<void>;
+  saveCurrentFile: () => Promise<void>;
+  handleSelectChange: (item: FileSystemItem) => Promise<void>;
   handleRename: (item: FileSystemItem) => void;
   handleRenameSubmit: (item: FileSystemItem) => Promise<void>;
   handleDelete: (item: FileSystemItem) => Promise<void>;
@@ -40,11 +44,10 @@ interface FileSystemStore {
 export const useFileSystemStore = create<FileSystemStore>((set, get) => ({
   currentFilePath: null,
   fileSystem: [],
-  saveStatus: "Saved",
+  saveStatus: SaveStatus.Saved,
   renamingItem: null,
   newName: "",
 
-  setCurrentFilePath: async (path) => set({ currentFilePath: path }),
   setFileSystem: (items) => set({ fileSystem: items }),
   getFileSystem: async () => {
     try {
@@ -77,27 +80,33 @@ export const useFileSystemStore = create<FileSystemStore>((set, get) => ({
   setRenamingItem: (itemId) => set({ renamingItem: itemId }),
   setNewName: (name) => set({ newName: name }),
 
-  saveCurrentFile: async (editorInstance) => {
+  saveCurrentFile: async () => {
     const { currentFilePath } = get();
-    console.log({ currentFilePath });
+    const { editorInstance } = useEditorStore.getState();
+
     if (!currentFilePath || !editorInstance) {
       console.error("No file path specified or editor instance is null");
       return;
     }
     try {
+      const markdown = editorInstance.storage.markdown.getMarkdown();
+      console.log("markdown", markdown);
       await fileManager.saveFile(
         currentFilePath,
-        editorInstance.storage.markdown.getMarkdown(),
+        markdown,
       );
-      set({ saveStatus: "Saved" });
+      set({ saveStatus: SaveStatus.Saved });
     } catch (error) {
       console.error("Failed to save file:", error);
     }
   },
 
-  handleSelectChange: async (item, editorInstance) => {
-    const content = await fileManager.getFileContent(item.path);
-    editorInstance?.commands.setContent(JSON.parse(content));
+  handleSelectChange: async (item) => {
+    const { saveStatus, saveCurrentFile } = get();
+    if (saveStatus === SaveStatus.Unsaved) {
+      await saveCurrentFile();
+    }
+
     set({ currentFilePath: item.path });
   },
 

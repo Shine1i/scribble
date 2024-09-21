@@ -1,10 +1,10 @@
 // src/managers/FileManager.ts
-import { FileSaver } from "@/lib/services/FileSaver";
-import { FileSystemRefresher } from "@/lib/services/FileSystemRefresher";
-import { FileOpener } from "@/lib/services/FileOpener";
-import { FileSystemInitializer } from "@/lib/services/FileSystemInitializer";
-import { FileDeleter } from "@/lib/services/FileDeleter";
-import { FileRenamer } from "@/lib/services/FileRenamer";
+import { FileSaver } from "@/lib/fileManager/services/FileSaver";
+import { FileSystemRefresher } from "@/lib/fileManager/services/FileSystemRefresher";
+import { FileOpener } from "@/lib/fileManager/services/FileOpener";
+import { FileSystemInitializer } from "@/lib/fileManager/services/FileSystemInitializer";
+import { FileDeleter } from "@/lib/fileManager/services/FileDeleter";
+import { FileRenamer } from "@/lib/fileManager/services/FileRenamer";
 import { BaseDirectory } from "@tauri-apps/plugin-fs";
 
 class FileManager {

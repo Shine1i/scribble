@@ -5,7 +5,6 @@ import { useFileSystemStore } from "@/hooks/use-file-system";
 import { Button } from "@/components/tailwind/ui/button";
 import Link from "next/link";
 import { FileIcon, FileText, ImportIcon, PlusIcon } from "lucide-react";
-import { FileSystemItem } from "@/lib/interfaces/IFileInterfaces";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader } from "@/components/tailwind/ui/card";
 import { Input } from "@/components/tailwind/ui/input";
@@ -20,6 +19,7 @@ import {
 import { listen, TauriEvent } from "@tauri-apps/api/event";
 import { TimeFormat } from "@/components/tailwind/ui/timeFormat";
 import { CreateNote } from "@/components/note";
+import { FileSystemItem } from "@/lib/fileManager/types";
 
 export default function Page() {
   return (
@@ -44,7 +44,7 @@ export default function Page() {
 }
 
 function Notes() {
-  const { getFileSystem, setCurrentFilePath, fileSystem } =
+  const { getFileSystem, handleSelectChange, fileSystem } =
     useFileSystemStore();
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
@@ -70,7 +70,7 @@ function Notes() {
   }, []);
 
   const navigateToSystemItem = (fileSystemItem: FileSystemItem): void => {
-    setCurrentFilePath(fileSystemItem.path);
+    handleSelectChange(fileSystemItem);
     router.push("/markdown-editor");
   };
 

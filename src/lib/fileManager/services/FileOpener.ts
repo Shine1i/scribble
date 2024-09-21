@@ -1,5 +1,5 @@
 import { BaseDirectory, readTextFile } from "@tauri-apps/plugin-fs";
-import { IFileOpener } from "../interfaces/IFileInterfaces";
+import { IFileOpener } from "../types";
 
 export class FileOpener implements IFileOpener {
   async openFile(path: string): Promise<string> {

@@ -1,5 +1,5 @@
 import { BaseDirectory, remove } from "@tauri-apps/plugin-fs";
-import { IFileDeleter } from "../interfaces/IFileInterfaces";
+import { IFileDeleter } from "../types";
 
 export class FileDeleter implements IFileDeleter {
   async deleteFile(path: string): Promise<void> {

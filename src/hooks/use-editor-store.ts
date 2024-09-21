@@ -11,7 +11,7 @@ export interface ToCItem {
 }
 
 export interface EditorState {
-  editorContent: JSONContent | null;
+  editorContent: JSONContent | undefined;
   charsCount: number | undefined;
   editorInstance: EditorInstance | null;
   tocItems: TableOfContentData;
@@ -23,11 +23,11 @@ export interface EditorState {
 }
 
 export const useEditorStore = create<EditorState>((set) => ({
-  editorContent: null,
+  editorContent: undefined,
   charsCount: undefined,
   editorInstance: null,
   tocItems: [],
-  setEditorContent: (content) => set({ editorContent: content }),
+  setEditorContent: (content) => set({ editorContent: content || undefined }),
   setCharsCount: (count) => set({ charsCount: count }),
   setEditorInstance: (instance) => set({ editorInstance: instance }),
   setTocItems: (items) => set({ tocItems: items }),

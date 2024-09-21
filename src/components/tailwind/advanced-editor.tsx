@@ -10,7 +10,7 @@ import {
   EditorRoot,
 } from "novel";
 import { handleCommandNavigation, ImageResizer } from "novel/extensions";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { defaultExtensions } from "./extensions";
 import { ColorSelector } from "./selectors/color-selector";
@@ -27,7 +27,7 @@ import { slashCommand, suggestionItems } from "./slash-command";
 import hljs from "highlight.js";
 
 import { useEditorStore } from "@/hooks/use-editor-store";
-import { useFileSystemStore } from "@/hooks/use-file-system";
+import { SaveStatus, useFileSystemStore } from "@/hooks/use-file-system";
 import { convertMarkdownFileToHtml } from "@/lib/utils";
 import { documentDir } from "@tauri-apps/api/path";
 import {
@@ -55,15 +55,18 @@ const MarkdownEditor = () => {
     const html = await convertMarkdownFileToHtml(
       (await documentDir()) + "/" + path,
     );
+
     editorInstance.commands.setContent(html);
   };
 
   useEffect(() => {
-    if (currentFilePath) {
+    console.log("currentFilePath", currentFilePath);
+    console.log("editorInstance", editorInstance);
+    if (currentFilePath && editorInstance) {
       convertMarkdownToHtml(currentFilePath);
     }
   }, [currentFilePath, editorInstance]);
-
+  
   const [openNode, setOpenNode] = useState(false);
   const [openColor, setOpenColor] = useState(false);
   const [openLink, setOpenLink] = useState(false);
@@ -74,8 +77,6 @@ const MarkdownEditor = () => {
     TableOfContents.configure({
       getIndex: getHierarchicalIndexes,
       onUpdate(content) {
-        console.log("updates");
-        console.log(content);
         setTocItems(content);
       },
     }),
@@ -95,9 +96,9 @@ const MarkdownEditor = () => {
     async (editor: EditorInstance) => {
       setCharsCount(editor.storage.characterCount.words());
       setEditorInstance(editor);
-      setSaveStatus("Unsaved");
+      setSaveStatus(SaveStatus.Unsaved);
       if (editor.getText().length > 0) {
-        await saveCurrentFile(editor);
+        await saveCurrentFile();
       }
     },
     500,
@@ -105,18 +106,25 @@ const MarkdownEditor = () => {
 
   useEffect(() => {
     if (saveStatus === "Unsaved" && editorInstance) {
-      const timer = setTimeout(() => saveCurrentFile(editorInstance), 2000);
+      const timer = setTimeout(() => saveCurrentFile(), 2000);
       return () => clearTimeout(timer);
     }
   }, [saveStatus, editorContent, editorInstance, saveCurrentFile]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     const content = window.localStorage.getItem("novel-content");
     if (content) setEditorContent(JSON.parse(content));
-    else setEditorContent(defaultEditorContent);
-  }, []);
+    //else setEditorContent(defaultEditorContent);
+  }, []); */
 
-  if (!editorContent) return null;
+  const editorRef = useRef<EditorInstance | null>(null);
+  useEffect(() => {
+      console.log(editorRef)
+    if (editorRef.current) {
+      //setEditorInstance(editorRef.current);
+    }
+  }, [editorRef.current]);
+
   return (
     <div className="relative w-full h-full ">
       <div className="flex absolute right-5 top-5 z-10 mb-5 gap-2">
@@ -138,6 +146,7 @@ const MarkdownEditor = () => {
           initialContent={editorContent}
           extensions={extensions}
           immediatelyRender={true}
+          ref={editorRef as any}
           className="relative min-h-[500px] w-full bg-card h-full sm:mb-[calc(20vh)] sm:rounded-lg  sm:shadow-lg"
           editorProps={{
             //@ts-ignore
@@ -155,9 +164,12 @@ const MarkdownEditor = () => {
           }}
           onUpdate={({ editor }) => {
             debouncedUpdates(editor);
-            setSaveStatus("Unsaved");
+            setSaveStatus(SaveStatus.Unsaved);
           }}
           onBeforeCreate={({ editor }) => {
+            setEditorInstance(editor);
+          }}
+          onCreate={({ editor }) => {
             setEditorInstance(editor);
           }}
           slotAfter={<ImageResizer />}
