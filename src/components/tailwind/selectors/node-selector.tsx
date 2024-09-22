@@ -119,7 +119,11 @@ export const NodeSelector = ({ open, onOpenChange }: NodeSelectorProps) => {
           <ChevronDown className="h-4 w-4" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent sideOffset={5} align="start" className="w-48 p-1">
+      <PopoverContent
+        sideOffset={5}
+        align="start"
+        className="w-48 p-1 bg-popover"
+      >
         {items.map((item) => (
           <EditorBubbleItem
             key={item.name}

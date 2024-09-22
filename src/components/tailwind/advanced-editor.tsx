@@ -143,7 +143,7 @@ const MarkdownEditor = () => {
   return (
     <div className="relative w-full h-full cursor-text" onClick={focusEditor}>
       <div className="flex absolute right-5 top-5 z-10 mb-5 gap-2">
-        <div className="rounded-lg bg-[var(--popover)] px-2 py-1 text-sm text-muted-foreground">
+        <div className="rounded-lg bg-card px-2 py-1 text-sm text-muted-foreground">
           {saveStatus}
         </div>
         <div
@@ -190,7 +190,7 @@ const MarkdownEditor = () => {
           }}
           slotAfter={<ImageResizer />}
         >
-          <EditorCommand className="z-50 h-auto max-h-[330px] overflow-y-auto rounded-md border border-muted bg-background px-1 py-2 shadow-md transition-all">
+          <EditorCommand className="z-50 h-auto max-h-[330px] overflow-y-auto rounded-md border border-muted bg-accent px-1 py-2 shadow-md transition-all">
             <EditorCommandEmpty className="px-2 text-muted-foreground">
               No results
             </EditorCommandEmpty>

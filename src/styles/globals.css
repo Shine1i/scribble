@@ -70,7 +70,7 @@
     --foreground: 245.45, 50%, 91.37%;
     --card: 245.71, 24.14%, 17.06%;
     --card-foreground: 0 0% 95%;
-    --popover: #393552;
+    --popover: 247.83, 24.73%, 18.24%;
     --popover-foreground: 0 0% 95%;
     --primary: 343.06, 75.61%, 67.84%;
     --primary-foreground: 167 100% 10.3%;
@@ -217,6 +217,9 @@ pre {
   @apply bg-transparent
 }
 
+mark {
+  @apply !bg-[#403d52]
+}
 .sidebar-options {
   align-items: flex-start;
   display: flex;
