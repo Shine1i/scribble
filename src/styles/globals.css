@@ -55,29 +55,35 @@
     --gruvbox-inline-code: 0 72% 32%; 
     --gruvbox-pre-code: 0 0% 16%;  
     --gruvbox-pre-bg: 45 11% 91%;  
-    --gruvbox-th-border: 43 18% 80%; 
-    --gruvbox-td-border: 43 13% 74%; 
+    --gruvbox-th-border: 43 18% 80%;
+    --gruvbox-td-border: 43 13% 74%;
+    --rose-prose-h1: 343.06, 75.61%, 67.84%;
+    --rose-prose-h2: 34.96, 87.59%, 71.57%;
+    --rose-prose-h3: 189, 43.48%, 72.94%;
+    --rose-prose-h4: 267.19, 57.14%, 78.04%;
+    --rose-prose-h5: 197.23, 48.96%, 37.65%;
+    --rose-prose-h6: 2.45, 55.06%, 82.55%;
   }
 
   .dark {
-    --background: 20 14.3% 4.1%;
-    --foreground: 0 0% 95%;
-    --card: 24 9.8% 10%;
+    --background: 249.23, 22.03%, 11.57%;
+    --foreground: 245.45, 50%, 91.37%;
+    --card: 245.71, 24.14%, 17.06%;
     --card-foreground: 0 0% 95%;
-    --popover: 0 0% 9%;
+    --popover: #393552;
     --popover-foreground: 0 0% 95%;
-    --primary: 167 77.2% 49.8%;
+    --primary: 343.06, 75.61%, 67.84%;
     --primary-foreground: 167 100% 10.3%;
     --secondary: 0 100% 67%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 15%;
+    --muted: 245.71, 24.14%, 17.06%;
     --muted-foreground: 167 5% 64.9%;
     --accent: 167 6.5% 15.1%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 85.7% 97.3%;
-    --border: 167 3.7% 15.9%;
-    --input: 167 3.7% 15.9%;
+    --border: 34.96, 87.59%, 71.57%;
+    --input: 247.5, 23.53%, 20%;
     --ring: 167 77.2% 49.8%;
     --chart-1: 167 77% 50%;
     --chart-2: 167 77% 62%;
@@ -95,22 +101,29 @@
     --novel-highlight-pink: #5c1a3a;
     --novel-highlight-gray: #3a3a3a;
 
-    --gruvbox-fg: 60 30% 96%;
-    --gruvbox-heading: 0 100% 67%; 
-    --gruvbox-lead: 60 30% 96%;  
-    --gruvbox-link: 191 97% 77%;     
+    --gruvbox-fg: 245.45, 50%, 91.37%;
+    --gruvbox-heading: 343.06, 75.61%, 67.84%;
+    --gruvbox-lead: 60 30% 96%;
+    --gruvbox-link: 267.19, 57.14%, 78.04%;
     --gruvbox-bold: 60 30% 96%;      
-    --gruvbox-counter: 60 30% 96%;   
-    --gruvbox-bullet: 60 30% 96%;    
-    --gruvbox-hr: 233 14% 26%;       
-    --gruvbox-quote: 231 15% 74%;    
-    --gruvbox-quote-border: 135 94% 65%; 
-    --gruvbox-caption: 231 15% 74%;  
-    --gruvbox-inline-code: 0 100% 67%; 
-    --gruvbox-pre-code: 60 30% 96%;  
-    --gruvbox-pre-bg: 232 14% 21%;   
+    --gruvbox-counter: 60 30% 96%;
+    --gruvbox-bullet: 248, 15%, 60.78%;
+    --gruvbox-hr: 247.5, 13.19%, 35.69%;
+    --gruvbox-quote: 231 15% 74%;
+    --gruvbox-quote-border: 34.96, 87.59%, 71.57%;
+    --gruvbox-caption: 231 15% 74%;
+    --gruvbox-inline-code: #e0def4;
+    --gruvbox-pre-code: 60 30% 96%;
+    --gruvbox-pre-bg: #2a273f;
     --gruvbox-th-border: 232 14% 31%; 
     --gruvbox-td-border: 233 14% 26%;
+    --rose-prose-h1: #eb6f92;
+    --rose-prose-h2: #f6c177;
+    --rose-prose-h3: #9ccfd8;
+    --rose-prose-h4: #c4a7e7;
+    --rose-prose-h5: #31748f;
+    --rose-prose-h6: #ebbcba;
+
   }
 }
 
@@ -124,6 +137,9 @@
   }
 }
 
+blockquote {
+  @apply !border-border;
+}
 pre {
   background: #0d0d0d;
   border-radius: 0.5rem;
@@ -140,7 +156,7 @@ pre {
 
   .hljs-comment,
   .hljs-quote {
-    color: #616161;
+    color: #6e6a86;
   }
 
   .hljs-variable,
@@ -153,7 +169,7 @@ pre {
   .hljs-name,
   .hljs-selector-id,
   .hljs-selector-class {
-    color: #f98181;
+    color: #e0def4;
   }
 
   .hljs-number,
@@ -169,17 +185,17 @@ pre {
   .hljs-string,
   .hljs-symbol,
   .hljs-bullet {
-    color: #b9f18d;
+    color: #f6c177;
   }
 
   .hljs-title,
   .hljs-section {
-    color: #faf594;
+    color: #e0def4;
   }
 
   .hljs-keyword,
   .hljs-selector-tag {
-    color: #70cff8;
+    color: #c4a7e7;
   }
 
   .hljs-emphasis {
@@ -192,8 +208,8 @@ pre {
 }
 
 
-::-webkit-scrollbar {
-  @apply w-2.5 h-2.5;
+*::-webkit-scrollbar {
+  @apply w-1.5 h-1.5 !important;
 
 }
 

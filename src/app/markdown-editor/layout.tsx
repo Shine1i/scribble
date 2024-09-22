@@ -27,7 +27,7 @@ export default function MarkdownEditorLayout({
   children: React.ReactNode;
 }) {
   const [openDialog, setOpenDialog] = useState<string>("");
-
+  // TODO: sent to email.
   return (
     <div className="flex flex-row w-full h-full">
       {/* Sidebar on desktop */}
@@ -66,10 +66,10 @@ export default function MarkdownEditorLayout({
       </div>
 
       {/* Content */}
-      <main className="w-full h-full max-h-[100vh] p-2 overflow-auto">
+      <main className="w-full h-full max-h-[100vh] p-2 overflow-auto bg-background">
         <div
           className="h-full
-          bg-card
+          bg-background
           text-card-foreground
           rounded-lg"
         >

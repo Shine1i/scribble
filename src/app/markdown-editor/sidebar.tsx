@@ -42,7 +42,7 @@ export default function SideBar() {
   return (
     <div className={"flex flex-col p-2 h-full"}>
       <Tabs className={"flex flex-col  h-full"} defaultValue="files">
-        <TabsList className={"w-full"}>
+        <TabsList className={"w-full bg-card"}>
           <TabsTrigger className={"w-full"} value="files">
             Files
           </TabsTrigger>

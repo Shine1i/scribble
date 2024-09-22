@@ -143,13 +143,13 @@ const MarkdownEditor = () => {
   return (
     <div className="relative w-full h-full cursor-text" onClick={focusEditor}>
       <div className="flex absolute right-5 top-5 z-10 mb-5 gap-2">
-        <div className="rounded-lg bg-accent px-2 py-1 text-sm text-muted-foreground">
+        <div className="rounded-lg bg-[var(--popover)] px-2 py-1 text-sm text-muted-foreground">
           {saveStatus}
         </div>
         <div
           className={
             charsCount
-              ? "rounded-lg bg-accent px-2 py-1 text-sm text-muted-foreground"
+              ? "rounded-lg bg-[var(--popover)] px-2 py-1 text-sm text-muted-foreground"
               : "hidden"
           }
         >
@@ -161,7 +161,7 @@ const MarkdownEditor = () => {
           initialContent={editorContent}
           extensions={extensions}
           immediatelyRender={true}
-          className="relative min-h-[500px] w-full bg-card rounded-lg h-full"
+          className="relative min-h-[500px] w-full  grow rounded-lg h-full"
           editorProps={{
             //@ts-ignore
             handleDOMEvents: {
@@ -173,7 +173,7 @@ const MarkdownEditor = () => {
               handleImageDrop(view, event, moved, uploadFn),
             attributes: {
               class:
-                "prose prose-gruvbox prose-h2:text-[var(--tw-prose-headings)] prose-h3:text-[var(--tw-prose-headings)] prose-h4:text-[var(--tw-prose-headings)] prose-h5:text-[var(--tw-prose-headings)] prose-headings:font-title font-default focus:outline-none max-w-full",
+                "prose prose-gruvbox prose-a:text-border prose-pre:border-l-4 prose-pre:rounded-sm  prose-pre:bg-muted prose-h1:text-[var(--rose-prose-h1)] prose-h2:text-[var(--rose-prose-h2)] prose-h3:text-[var(--rose-prose-h3)] prose-h4:text-[var(--rose-prose-h4)] prose-h5:text-[var(--rose-prose-h5)] prose-h6:text-[var(--rose-prose-h6)] prose-headings:font-title font-default focus:outline-none max-w-full",
             },
           }}
           onUpdate={({ editor }) => {

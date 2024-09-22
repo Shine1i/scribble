@@ -32,9 +32,7 @@ export function SidebarLayout({
         <Dialog open={!!dialogOpen} onOpenChange={() => setDialogOpen("")}>
           <ContextMenu>
             <ContextMenuTrigger>
-              <div className="w-64 h-full">
-                {sidebar}
-              </div>
+              <div className="w-64 h-full">{sidebar}</div>
             </ContextMenuTrigger>
             <ContextMenuContent className="w-64 *:cursor-pointer">
               <ContextMenuItem onClick={() => setDialogOpen("new-file")}>
@@ -67,7 +65,7 @@ export function SidebarLayout({
       <main className="flex h-full max-h-[100vh] w-full overflow-auto flex-col pb-2">
         <div
           className="grow
-              bg-card
+             bg-card
               text-card-foreground
               rounded-lg"
         >

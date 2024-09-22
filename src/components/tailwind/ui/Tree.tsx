@@ -155,11 +155,7 @@ const Tree = forwardRef<HTMLDivElement, TreeViewProps>(
         }}
       >
         <div className={cn("size-full", className)}>
-          <ScrollArea
-            ref={ref}
-            className="h-full"
-            dir={dir as Direction}
-          >
+          <ScrollArea ref={ref} className="h-full" dir={dir as Direction}>
             <AccordionPrimitive.Root
               {...props}
               type="multiple"
@@ -454,7 +450,7 @@ const File = forwardRef<
           className={cn(
             "flex items-center bg-red- p-1 w-full gap-1 cursor-pointer hover:bg-accent  text-sm pr-1 rtl:pl-1 rtl:pr-0 rounded-none  duration-200 ease-in-out",
             {
-              "bg-muted border-r-2 border-secondary":
+              "bg-card text-border border-r-2 border-border":
                 isSelected && isSelectable,
             },
             isSelectable ? "cursor-pointer" : "opacity-50 cursor-not-allowed",
