@@ -1,5 +1,4 @@
 import { useFileSystemStore } from "@/hooks/use-file-system";
-import { FileSystemItem } from "@/lib/interfaces/IFileInterfaces";
 import { Button } from "@/components/tailwind/ui/button";
 import {
   Dialog,
@@ -14,6 +13,7 @@ import { useState, useCallback } from "react";
 import { toast } from "sonner";
 import { DialogHeader, DialogFooter } from "./tailwind/ui/dialog";
 import { DialogProps } from "@radix-ui/react-dialog";
+import { FileSystemItem } from "@/lib/fileManager/types";
 
 export function CreateNoteDialog({ children, ...props }: DialogProps) {
   return (

@@ -66,3 +66,8 @@ All notes will be saved in the `Scribble` folder located inside your `Documents`
 
 ---
 
+
+
+
+
+CommandOrControl+e to toggle go to the advanced editor 

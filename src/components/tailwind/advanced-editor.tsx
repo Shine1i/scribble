@@ -34,6 +34,7 @@ import {
   getHierarchicalIndexes,
   TableOfContents,
 } from "@tiptap-pro/extension-table-of-contents";
+import { register } from "@tauri-apps/plugin-global-shortcut";
 
 const MarkdownEditor = () => {
   const { currentFilePath, saveCurrentFile, saveStatus, setSaveStatus } =
@@ -66,7 +67,7 @@ const MarkdownEditor = () => {
       convertMarkdownToHtml(currentFilePath);
     }
   }, [currentFilePath, editorInstance]);
-  
+
   const [openNode, setOpenNode] = useState(false);
   const [openColor, setOpenColor] = useState(false);
   const [openLink, setOpenLink] = useState(false);
@@ -104,6 +105,25 @@ const MarkdownEditor = () => {
     500,
   );
 
+  const editorRef = useRef<EditorInstance | null>(null);
+
+  const focusEditor = () => {
+    editorRef.current?.commands.focus();
+  };
+
+  useEffect(() => {
+    // command control + e
+    (async () => {
+      await register("CommandOrControl+e", (event) => {
+        if (event.state === "Pressed") {
+          console.log("Shortcut triggered");
+        }
+        console.log("command control + e");
+        focusEditor();
+      });
+    })();
+  }, []);
+
   useEffect(() => {
     if (saveStatus === "Unsaved" && editorInstance) {
       const timer = setTimeout(() => saveCurrentFile(), 2000);
@@ -111,22 +131,17 @@ const MarkdownEditor = () => {
     }
   }, [saveStatus, editorContent, editorInstance, saveCurrentFile]);
 
-  /* useEffect(() => {
-    const content = window.localStorage.getItem("novel-content");
-    if (content) setEditorContent(JSON.parse(content));
-    //else setEditorContent(defaultEditorContent);
-  }, []); */
+  // do this so we can keep immediatelyRender=true and not have hydration errors
+  const [hydrated, setHydrated] = useState(false);
 
-  const editorRef = useRef<EditorInstance | null>(null);
   useEffect(() => {
-      console.log(editorRef)
-    if (editorRef.current) {
-      //setEditorInstance(editorRef.current);
-    }
-  }, [editorRef.current]);
+    setHydrated(true);
+  }, []);
+
+  if (!hydrated) return null;
 
   return (
-    <div className="relative w-full h-full ">
+    <div className="relative w-full h-full cursor-text" onClick={focusEditor}>
       <div className="flex absolute right-5 top-5 z-10 mb-5 gap-2">
         <div className="rounded-lg bg-accent px-2 py-1 text-sm text-muted-foreground">
           {saveStatus}
@@ -146,8 +161,7 @@ const MarkdownEditor = () => {
           initialContent={editorContent}
           extensions={extensions}
           immediatelyRender={true}
-          ref={editorRef as any}
-          className="relative min-h-[500px] w-full bg-card h-full sm:mb-[calc(20vh)] sm:rounded-lg  sm:shadow-lg"
+          className="relative min-h-[500px] w-full bg-card rounded-lg h-full"
           editorProps={{
             //@ts-ignore
             handleDOMEvents: {
@@ -168,9 +182,11 @@ const MarkdownEditor = () => {
           }}
           onBeforeCreate={({ editor }) => {
             setEditorInstance(editor);
+            editorRef.current = editor;
           }}
           onCreate={({ editor }) => {
             setEditorInstance(editor);
+            editorRef.current = editor;
           }}
           slotAfter={<ImageResizer />}
         >
