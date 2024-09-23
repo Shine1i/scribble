@@ -22,7 +22,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
 }) => {
   const [h, s, l] = color.split(" ").map((v) => parseFloat(v));
   const hexColor = hslToHex(h, s, l);
-
+  //TODO: colors for the editor specificly heading must be hex values for some reason it doesn't work with hsl
   return (
     <div className="flex items-center space-x-2">
       <Label htmlFor={`${colorSet}-${colorKey}`} className="w-24">
