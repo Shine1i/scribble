@@ -29,11 +29,13 @@ import {
   ContextMenuTrigger,
 } from "@/components/tailwind/ui/context-menu";
 import { ScrollArea } from "@/components/tailwind/ui/scroll-area";
+import { useRouter } from "next/navigation";
 
 export default function SideBar() {
   const { fileSystem, getFileSystem } = useFileSystemStore();
   const MemorizedToC = memo(ToC);
   const { editorInstance, tocItems } = useEditorStore();
+  const router = useRouter();
 
   useEffect(() => {
     getFileSystem();
@@ -86,7 +88,7 @@ export default function SideBar() {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Sync Now</DropdownMenuItem>
                 <DropdownMenuItem>Logs</DropdownMenuItem>
-                <DropdownMenuItem>Settings</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => router.push("/settings")} className={"cursor-pointer"}>Settings</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
             <Button

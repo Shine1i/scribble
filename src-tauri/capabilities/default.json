@@ -21,6 +21,12 @@
     "clipboard-manager:allow-read-text",
     "clipboard-manager:allow-write-text",
     "fs:scope-download-recursive",
+    "store:allow-get",
+    "store:allow-set",
+    "store:allow-save",
+    "store:allow-load",
+    "store:allow-clear",
+    "store:default",
     {
       "identifier": "shell:allow-execute",
       "allow": [

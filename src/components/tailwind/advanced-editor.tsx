@@ -35,6 +35,7 @@ import {
   TableOfContents,
 } from "@tiptap-pro/extension-table-of-contents";
 import { register } from "@tauri-apps/plugin-global-shortcut";
+import { useSettings } from "@/hooks/use-settings";
 
 const MarkdownEditor = () => {
   const { currentFilePath, saveCurrentFile, saveStatus, setSaveStatus } =
@@ -49,6 +50,21 @@ const MarkdownEditor = () => {
     setCharsCount,
     setTocItems,
   } = useEditorStore();
+  const [openNode, setOpenNode] = useState(false);
+  const [openColor, setOpenColor] = useState(false);
+  const [openLink, setOpenLink] = useState(false);
+  const [openAI, setOpenAI] = useState(false);
+  const extensions = [
+    ...defaultExtensions,
+    slashCommand,
+    TableOfContents.configure({
+      getIndex: getHierarchicalIndexes,
+      onUpdate(content) {
+        setTocItems(content);
+      },
+    }),
+  ];
+  const { settings } = useSettings();
 
   const convertMarkdownToHtml = async (path: string) => {
     if (!editorInstance) return;
@@ -68,20 +84,6 @@ const MarkdownEditor = () => {
     }
   }, [currentFilePath, editorInstance]);
 
-  const [openNode, setOpenNode] = useState(false);
-  const [openColor, setOpenColor] = useState(false);
-  const [openLink, setOpenLink] = useState(false);
-  const [openAI, setOpenAI] = useState(false);
-  const extensions = [
-    ...defaultExtensions,
-    slashCommand,
-    TableOfContents.configure({
-      getIndex: getHierarchicalIndexes,
-      onUpdate(content) {
-        setTocItems(content);
-      },
-    }),
-  ];
   //Apply Codeblock Highlighting on the HTML from editor.getHTML()
   const highlightCodeblocks = (content: string) => {
     const doc = new DOMParser().parseFromString(content, "text/html");
@@ -105,10 +107,8 @@ const MarkdownEditor = () => {
     500,
   );
 
-  const editorRef = useRef<EditorInstance | null>(null);
-
   const focusEditor = () => {
-    editorRef.current?.commands.focus();
+    editorInstance?.commands.focus();
   };
 
   useEffect(() => {
@@ -126,7 +126,7 @@ const MarkdownEditor = () => {
 
   useEffect(() => {
     if (saveStatus === "Unsaved" && editorInstance) {
-      const timer = setTimeout(() => saveCurrentFile(), 2000);
+      const timer = setTimeout(() => saveCurrentFile(), settings.debounceRate);
       return () => clearTimeout(timer);
     }
   }, [saveStatus, editorContent, editorInstance, saveCurrentFile]);
@@ -182,11 +182,9 @@ const MarkdownEditor = () => {
           }}
           onBeforeCreate={({ editor }) => {
             setEditorInstance(editor);
-            editorRef.current = editor;
           }}
           onCreate={({ editor }) => {
             setEditorInstance(editor);
-            editorRef.current = editor;
           }}
           slotAfter={<ImageResizer />}
         >
