@@ -11,7 +11,7 @@ export default function ThemePage() {
 }
 // components/ThemeSettings.tsx
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/tailwind/ui/button";
 import { Label } from "@/components/tailwind/ui/label";
 import {
@@ -31,16 +31,21 @@ import { useThemeStore } from "@/hooks/use-theme-store";
 import { ColorPicker } from "@/app/settings/@theme/ColorPicker";
 import { hexToHsl } from "@/lib/themes/colorConversion";
 import { predefinedEditorThemes, predefinedThemes } from "@/lib/themes/themes";
+import { Input } from "@/components/tailwind/ui/input";
 
 export function ThemeColorChanger() {
   const {
     appColors,
     editorColors,
+    customThemes,
     setAppColor,
     setEditorColor,
     setAppTheme,
     setEditorTheme,
+    saveCustomTheme,
   } = useThemeStore();
+
+  const [newThemeName, setNewThemeName] = useState("");
 
   useEffect(() => {
     Object.entries(appColors).forEach(([key, value]) => {
@@ -56,23 +61,28 @@ export function ThemeColorChanger() {
     key: string,
     value: string,
   ) => {
-    const hslValue = hexToHsl(value);
-    if (hslValue) {
-      if (colorSet === "app") {
-        setAppColor(key, hslValue);
-      } else {
-        setEditorColor(key, hslValue);
-      }
+    if (colorSet === "app") {
+      setAppColor(key, value);
+    } else {
+      setEditorColor(key, value);
     }
   };
 
   const handleThemeChange = (colorSet: "app" | "editor", theme: string) => {
+    const allThemes = { ...predefinedThemes, ...customThemes };
     if (colorSet === "app") {
-      setAppTheme(predefinedThemes[theme as keyof typeof predefinedThemes]);
+      setAppTheme(allThemes[theme]);
     } else {
       setEditorTheme(
         predefinedEditorThemes[theme as keyof typeof predefinedEditorThemes],
       );
+    }
+  };
+
+  const handleSaveCustomTheme = () => {
+    if (newThemeName) {
+      saveCustomTheme(newThemeName, appColors);
+      setNewThemeName("");
     }
   };
 
@@ -106,13 +116,26 @@ export function ThemeColorChanger() {
                 <SelectValue placeholder="Select a theme" />
               </SelectTrigger>
               <SelectContent>
-                {Object.keys(predefinedThemes).map((theme) => (
-                  <SelectItem key={theme} value={theme}>
-                    {theme}
-                  </SelectItem>
-                ))}
+                {Object.keys({ ...predefinedThemes, ...customThemes }).map(
+                  (theme) => (
+                    <SelectItem key={theme} value={theme}>
+                      {theme}
+                    </SelectItem>
+                  ),
+                )}
               </SelectContent>
             </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Save Custom Theme</Label>
+            <div className="flex space-x-2">
+              <Input
+                value={newThemeName}
+                onChange={(e) => setNewThemeName(e.target.value)}
+                placeholder="Enter theme name"
+              />
+              <Button onClick={handleSaveCustomTheme}>Save Theme</Button>
+            </div>
           </div>
           <div className="flex space-x-4">
             {["primary", "secondary", "accent"].map((key) => (

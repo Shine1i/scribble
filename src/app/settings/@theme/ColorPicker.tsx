@@ -1,7 +1,8 @@
+// components/ColorPicker.tsx
 import React from "react";
 import { Label } from "@/components/tailwind/ui/label";
 import { Input } from "@/components/tailwind/ui/input";
-import { hslToHex } from "@/lib/themes/colorConversion";
+import { hexToHsl, hslToHex } from "@/lib/themes/colorConversion";
 
 interface ColorPickerProps {
   colorSet: "app" | "editor";
@@ -22,7 +23,18 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
 }) => {
   const [h, s, l] = color.split(" ").map((v) => parseFloat(v));
   const hexColor = hslToHex(h, s, l);
-  //TODO: colors for the editor specificly heading must be hex values for some reason it doesn't work with hsl
+
+  const handleHexChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const hslValue = hexToHsl(e.target.value);
+    if (hslValue) {
+      onColorChange(colorSet, colorKey, hslValue);
+    }
+  };
+
+  const handleHslChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onColorChange(colorSet, colorKey, e.target.value);
+  };
+
   return (
     <div className="flex items-center space-x-2">
       <Label htmlFor={`${colorSet}-${colorKey}`} className="w-24">
@@ -32,14 +44,14 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
         type="color"
         id={`${colorSet}-${colorKey}`}
         value={hexColor}
-        onChange={(e) => onColorChange(colorSet, colorKey, e.target.value)}
+        onChange={handleHexChange}
         className="w-12 h-8 p-0 border-none"
       />
       <Input
         type="text"
         value={color}
-        onChange={(e) => onColorChange(colorSet, colorKey, e.target.value)}
-        className="w-24"
+        onChange={handleHslChange}
+        className="w-36"
       />
     </div>
   );

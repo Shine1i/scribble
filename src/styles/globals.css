@@ -101,7 +101,7 @@
     --novel-highlight-pink: #5c1a3a;
     --novel-highlight-gray: #3a3a3a;
 
-    --editor-fg: 245.45 50% 91.37%;
+    --editor-fg: 245.45, 50%, 91.37%;
     --editor-heading: 34.96 87.59% 71.57%;
     --editor-lead: 60 30% 96%;
     --editor-link: 267.19 57.14% 78.04%;

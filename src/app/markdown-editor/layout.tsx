@@ -66,10 +66,10 @@ export default function MarkdownEditorLayout({
       </div>
 
       {/* Content */}
-      <main className="w-full h-full max-h-[100vh] p-2 overflow-auto bg-background">
+      <main className="w-full h-full max-h-[100vh] p-2 overflow-auto bg-[hsl(var(--editor-background))]">
         <div
           className="h-full
-          bg-background
+         bg-[hsl(var(--editor-background))]
           text-card-foreground
           rounded-lg"
         >

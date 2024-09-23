@@ -1,17 +1,19 @@
 import { create } from "zustand";
 import { tauriPersist } from "@/hooks/tauri-persist";
 
-interface ThemeStore {
+interface ThemeState {
   appColors: Record<string, string>;
   editorColors: Record<string, string>;
+  customThemes: Record<string, Record<string, string>>;
   setAppColor: (key: string, value: string) => void;
   setEditorColor: (key: string, value: string) => void;
   setAppTheme: (theme: Record<string, string>) => void;
   setEditorTheme: (theme: Record<string, string>) => void;
+  saveCustomTheme: (name: string, theme: Record<string, string>) => void;
 }
 
-export const useThemeStore = create<ThemeStore>()(
-  tauriPersist("theme-store", (set) => ({
+export const useThemeStore = create<ThemeState>()(
+  tauriPersist("theme-storage", (set) => ({
     appColors: {
       background: "210 20% 98%",
       foreground: "240 10% 3.9%",
@@ -38,15 +40,18 @@ export const useThemeStore = create<ThemeStore>()(
       foreground: "0 0% 0%",
       syntax: "240 100% 50%",
     },
+    customThemes: {},
     setAppColor: (key, value) =>
-      set((state) => ({
-        appColors: { ...state.appColors, [key]: value },
-      })),
+      set((state) => ({ appColors: { ...state.appColors, [key]: value } })),
     setEditorColor: (key, value) =>
       set((state) => ({
         editorColors: { ...state.editorColors, [key]: value },
       })),
     setAppTheme: (theme) => set({ appColors: theme }),
     setEditorTheme: (theme) => set({ editorColors: theme }),
+    saveCustomTheme: (name, theme) =>
+      set((state) => ({
+        customThemes: { ...state.customThemes, [name]: theme },
+      })),
   })),
 );
