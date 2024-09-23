@@ -9,7 +9,8 @@ import {
 import { ThemeProvider, useTheme } from "next-themes";
 import { Toaster } from "sonner";
 import useLocalStorage from "../hooks/use-local-storage";
-
+import { ThemeLoader } from "./settings/@theme/ThemeLoader";
+import { useThemeStore } from "@/hooks/use-theme-store";
 export const AppContext = createContext<{
   font: string;
   setFont: Dispatch<SetStateAction<string>>;
@@ -38,6 +39,7 @@ export default function Providers({ children }: { children: ReactNode }) {
           setFont,
         }}
       >
+        <ThemeLoader />
         <ToasterProvider />
         {children}
       </AppContext.Provider>

@@ -35,7 +35,7 @@ export default function Page() {
             <Link href={"/markdown-editor"}>Go to Markdown Editor</Link>
           </Button>
           <Button className={"w-full"}>
-            <Link href={"/test"}>Go to Test</Link>
+            <Link href={"/settings"}>Go to Test</Link>
           </Button>
         </div>
       </div>

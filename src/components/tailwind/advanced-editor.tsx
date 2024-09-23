@@ -173,7 +173,7 @@ const MarkdownEditor = () => {
               handleImageDrop(view, event, moved, uploadFn),
             attributes: {
               class:
-                "prose prose-gruvbox prose-a:text-border prose-pre:border-l-4 prose-pre:rounded-sm  prose-pre:bg-muted prose-h1:text-[var(--rose-prose-h1)] prose-h2:text-[var(--rose-prose-h2)] prose-h3:text-[var(--rose-prose-h3)] prose-h4:text-[var(--rose-prose-h4)] prose-h5:text-[var(--rose-prose-h5)] prose-h6:text-[var(--rose-prose-h6)] prose-headings:font-title font-default focus:outline-none max-w-full",
+                "prose prose-gruvbox prose-a:text-border prose-pre:border-l-4 prose-pre:rounded-sm  prose-pre:bg-muted prose-h1:text-[hsl(var(--editor-h1))] prose-h2:text-[var(--editor-h2)] prose-h3:text-[var(--editor-h3)] prose-h4:text-[var(--editor-h4)] prose-h5:text-[var(--editor-h5)] prose-h6:text-[var(--editor-h6)] prose-headings:font-title font-default focus:outline-none max-w-full",
             },
           }}
           onUpdate={({ editor }) => {
