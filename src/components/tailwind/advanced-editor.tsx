@@ -106,11 +106,11 @@ const MarkdownEditor = () => {
     },
     500,
   );
-
-  const focusEditor = () => {
-    editorInstance?.commands.focus();
-  };
-
+  // TODO: DONT DO THIS IT BREAKS AI
+  // const focusEditor = () => {
+  //   editorInstance?.commands.focus();
+  // };
+  //
   useEffect(() => {
     // command control + e
     (async () => {
@@ -119,7 +119,6 @@ const MarkdownEditor = () => {
           console.log("Shortcut triggered");
         }
         console.log("command control + e");
-        focusEditor();
       });
     })();
   }, []);
@@ -141,7 +140,7 @@ const MarkdownEditor = () => {
   if (!hydrated) return null;
 
   return (
-    <div className="relative w-full h-full cursor-text" onClick={focusEditor}>
+    <div className="relative w-full h-full cursor-text">
       <div className="flex absolute right-5 top-5 z-10 mb-5 gap-2">
         <div className="rounded-lg bg-card px-2 py-1 text-sm text-muted-foreground">
           {saveStatus}
@@ -161,6 +160,7 @@ const MarkdownEditor = () => {
           initialContent={editorContent}
           extensions={extensions}
           immediatelyRender={true}
+          autofocus={true}
           className="relative min-h-[500px] w-full  grow rounded-lg h-full"
           editorProps={{
             //@ts-ignore
