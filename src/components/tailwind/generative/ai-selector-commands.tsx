@@ -42,7 +42,10 @@ const AISelectorCommands = ({ onSelect }: AISelectorCommandsProps) => {
 
   return (
     <>
-      <CommandGroup heading="Edit or review selection">
+      <CommandGroup
+        className={"!bg-[hsl(var(--card))]"}
+        heading="Edit or review selection"
+      >
         {options.map((option) => (
           <CommandItem
             onSelect={(value) => {
@@ -56,13 +59,16 @@ const AISelectorCommands = ({ onSelect }: AISelectorCommandsProps) => {
             key={option.value}
             value={option.value}
           >
-            <option.icon className="h-4 w-4 text-purple-500" />
+            <option.icon className="h-4 w-4 text-[hsl(var(--primary))]" />
             {option.label}
           </CommandItem>
         ))}
       </CommandGroup>
       <CommandSeparator />
-      <CommandGroup heading="Use AI to do more">
+      <CommandGroup
+        className={"!bg-[hsl(var(--card))]"}
+        heading="Use AI to do more"
+      >
         <CommandItem
           onSelect={() => {
             const pos = editor!.state.selection.from;
@@ -73,7 +79,7 @@ const AISelectorCommands = ({ onSelect }: AISelectorCommandsProps) => {
           value="continue"
           className="gap-2 px-4"
         >
-          <StepForward className="h-4 w-4 text-purple-500" />
+          <StepForward className="h-4 w-4 text-[hsl(var(--primary))]" />
           Continue writing
         </CommandItem>
       </CommandGroup>

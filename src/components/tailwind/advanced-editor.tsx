@@ -28,6 +28,8 @@ import hljs from "highlight.js";
 
 import { useEditorStore } from "@/hooks/use-editor-store";
 import { SaveStatus, useFileSystemStore } from "@/hooks/use-file-system";
+
+``;
 import { convertMarkdownFileToHtml } from "@/lib/utils";
 import { documentDir } from "@tauri-apps/api/path";
 import {
@@ -173,9 +175,9 @@ const MarkdownEditor = () => {
               handleImageDrop(view, event, moved, uploadFn),
             attributes: {
               class: [
-                "prose prose-gruvbox",
+                "prose",
                 "prose-a:text-[hsl(var(--editor-link))]",
-                "prose-pre:border-l-4 prose-pre:rounded-sm prose-pre:bg-[hsl(var(--editor-pre-bg))]",
+                "prose-pre:border-l-4 prose-pre:border-[hsl(var(--editor-quote-border))] prose-pre:rounded-sm prose-pre:bg-[hsl(var(--editor-pre-bg))]",
                 "prose-h1:text-[hsl(var(--editor-h1))]",
                 "prose-h2:text-[hsl(var(--editor-h2))]",
                 "prose-h3:text-[hsl(var(--editor-h3))]",

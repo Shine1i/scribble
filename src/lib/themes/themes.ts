@@ -1,6 +1,6 @@
 export const predefinedThemes = {
   default: {
-    background: "249.23 22.03% 11.57%",
+    background: "220 16.36% 21.57%",
     foreground: "245.45 50% 91.37%",
     card: "245.71 24.14% 17.06%",
     "card-foreground": "0 0% 95%",
@@ -25,7 +25,7 @@ export const predefinedThemes = {
 
 export const predefinedEditorThemes = {
   default: {
-    background: "0 0% 20%",
+    background: "0 99% 20%",
     foreground: "0 0% 90%",
     syntax: "200 100% 60%",
     body: "245.45 50% 91.37%",

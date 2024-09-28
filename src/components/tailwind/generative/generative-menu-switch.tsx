@@ -30,13 +30,13 @@ const GenerativeMenuSwitch = ({
           editor!.chain().unsetHighlight().run();
         },
       }}
-      className="flex w-fit max-w-[90vw] overflow-hidden rounded-md border border-muted bg-background shadow-xl"
+      className="flex w-fit max-w-[90vw] overflow-hidden rounded-md border border-border bg-card shadow-xl"
     >
       {open && <AISelector open={open} onOpenChange={onOpenChange} />}
       {!open && (
         <Fragment>
           <Button
-            className="gap-1 rounded-none text-purple-500"
+            className="gap-1 rounded-none text-[hsl(var(--primary))]"
             variant="ghost"
             onClick={() => onOpenChange(true)}
             size="sm"

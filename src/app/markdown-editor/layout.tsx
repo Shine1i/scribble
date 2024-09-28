@@ -66,7 +66,7 @@ export default function MarkdownEditorLayout({
       </div>
 
       {/* Content */}
-      <main className="w-full h-full max-h-[100vh] p-2 overflow-auto bg-[hsl(var(--editor-background))]">
+      <main className=" max-h-[100vh] flex flex-1 flex-col rounded-lg lg:mb-2 lg:min-w-0 lg:mr-2 lg:mt-2 p-2 overflow-auto bg-[hsl(var(--editor-background))]">
         <div
           className="h-full
          bg-[hsl(var(--editor-background))]
@@ -78,9 +78,9 @@ export default function MarkdownEditorLayout({
       </main>
 
       {/* Side bar for ai */}
-      <nav className="w-full h-full">
-        <AIChatComponent />
-      </nav>
+      {/*<nav className="w-full h-full">*/}
+      {/*  <AIChatComponent />*/}
+      {/*</nav>*/}
     </div>
   );
 }

@@ -66,23 +66,23 @@
   }
 
   .dark {
-    --background: 249.23 22.03% 11.57%;
-    --foreground: 245.45 50% 91.37%;
-    --card: 245.71 24.14% 17.06%;
+    --background: 220 16.36% 21.57%;
+    --foreground: 218 27% 94%;
+    --card: 222 16% 28%;
     --card-foreground: 0 0% 95%;
     --popover: 247.83 24.73% 18.24%;
     --popover-foreground: 0 0% 95%;
-    --primary: 34.96 87.59% 71.57%;
+    --primary: 210 34% 63%;
     --primary-foreground: 167 100% 10.3%;
     --secondary: 0 100% 67%;
     --secondary-foreground: 0 0% 98%;
     --muted: 245.71 24.14% 17.06%;
     --muted-foreground: 167 5% 64.9%;
-    --accent: 167 6.5% 15.1%;
+    --accent: 220 17% 32%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 85.7% 97.3%;
-    --border: 34.96 87.59% 71.57%;
+    --border: 220 16% 22%;
     --input: 247.5 23.53% 20%;
     --ring: 167 77.2% 49.8%;
     --chart-1: 167 77% 50%;
@@ -101,28 +101,29 @@
     --novel-highlight-pink: #5c1a3a;
     --novel-highlight-gray: #3a3a3a;
 
-    --editor-fg: 245.45, 50%, 91.37%;
-    --editor-heading: 34.96 87.59% 71.57%;
+    --editor-background: 220 17% 17%;
+    --editor-fg: 218 27% 94%;
+    --editor-heading: 210 34% 63%;
     --editor-lead: 60 30% 96%;
-    --editor-link: 267.19 57.14% 78.04%;
+    --editor-link: 210 34% 63%;
     --editor-bold: 60 30% 96%;
     --editor-counter: 60 30% 96%;
     --editor-bullet: 248 15% 60.78%;
     --editor-hr: 247.5 13.19% 35.69%;
     --editor-quote: 231 15% 74%;
-    --editor-quote-border: 34.96 87.59% 71.57%;
+    --editor-quote-border: 210 34% 63%;
     --editor-caption: 231 15% 74%;
     --editor-inline-code: #e0def4;
     --editor-pre-code: 60 30% 96%;
-    --editor-pre-bg: #2a273f;
+    --editor-pre-bg: 220 16.36% 21.57%; /* done*/
     --editor-th-border: 232 14% 31%;
     --editor-td-border: 233 14% 26%;
-    --editor-h1: #eb6f92;
-    --editor-h2: #f6c177;
-    --editor-h3: #9ccfd8;
-    --editor-h4: #c4a7e7;
-    --editor-h5: #31748f;
-    --editor-h6: #ebbcba;
+    --editor-h1: 210 34% 63%;
+    --editor-h2: 210 34% 63%;
+    --editor-h3: 210 34% 63%;
+    --editor-h4: 210 34% 63%;
+    --editor-h5: 210 34% 63%;
+    --editor-h6: 210 34% 63%;
 
   }
 }
@@ -138,9 +139,7 @@
   }
 }
 
-blockquote {
-  @apply !border-border;
-}
+
 pre {
   background: #0d0d0d;
   border-radius: 0.5rem;
@@ -157,7 +156,7 @@ pre {
 
   .hljs-comment,
   .hljs-quote {
-    color: #6e6a86;
+    color: #5e81ac;
   }
 
   .hljs-variable,
@@ -170,7 +169,7 @@ pre {
   .hljs-name,
   .hljs-selector-id,
   .hljs-selector-class {
-    color: #e0def4;
+    color: #d8dee9;
   }
 
   .hljs-number,
@@ -180,13 +179,13 @@ pre {
   .hljs-literal,
   .hljs-type,
   .hljs-params {
-    color: #fbbc88;
+    color: #8fbcbb;
   }
 
   .hljs-string,
   .hljs-symbol,
   .hljs-bullet {
-    color: #f6c177;
+    color: #a3be8c;
   }
 
   .hljs-title,
@@ -196,7 +195,7 @@ pre {
 
   .hljs-keyword,
   .hljs-selector-tag {
-    color: #c4a7e7;
+    color: #88c0d0;
   }
 
   .hljs-emphasis {
@@ -275,5 +274,5 @@ mark {
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply rounded-full bg-border border-[1px] border-transparent border-solid bg-clip-padding;
+  @apply rounded-full bg-[hsl(var(--primary))] border-[1px] border-transparent border-solid bg-clip-padding;
 }

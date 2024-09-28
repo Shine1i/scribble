@@ -7,7 +7,7 @@ import { openai, createOpenAI } from "@ai-sdk/openai";
 import cors from "@fastify/cors";
 import { ChatCompletionMessageParam } from "ai/prompts/dist";
 import { match } from "ts-pattern";
-import crypto from "crypto";
+import crypto from "node:crypto";
 
 const aiModel = process.env.OPENAI_API_KEY ? "openai" : "anthropic";
 

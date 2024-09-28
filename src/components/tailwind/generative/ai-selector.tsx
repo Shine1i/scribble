@@ -48,11 +48,11 @@ export function AISelector({ onOpenChange }: AISelectorProps) {
   const hasCompletion = completion.length > 0;
 
   return (
-    <Commandui className="w-[350px]">
+    <Commandui className="w-[350px] bg-[hsl(var(--card))]">
       {hasCompletion && (
         <div className="flex max-h-[400px]">
           <ScrollArea>
-            <div className="prose prose-gruvbox prose-headings:font-title p-2 px-4 prose-sm">
+            <div className="prose prose-invert  prose-headings:text-[hsl(var(--editor-h1))] p-2 px-4 prose-sm">
               <Markdown>{completion}</Markdown>
             </div>
           </ScrollArea>
@@ -60,7 +60,7 @@ export function AISelector({ onOpenChange }: AISelectorProps) {
       )}
 
       {isLoading && (
-        <div className="flex h-12 w-full items-center px-4 text-sm font-medium text-muted-foreground text-purple-500">
+        <div className="flex h-12 w-full items-center px-4 text-sm font-medium  text-[hsl(var(--primary))]">
           <Magic className="mr-2 h-4 w-4 shrink-0  " />
           AI is thinking
           <div className="ml-2 mt-1">
@@ -84,7 +84,7 @@ export function AISelector({ onOpenChange }: AISelectorProps) {
             />
             <Button
               size="icon"
-              className="absolute right-2 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full bg-purple-500 hover:bg-purple-900"
+              className="absolute right-2 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary-foreground))]"
               onClick={() => {
                 if (completion)
                   return complete(completion, {
