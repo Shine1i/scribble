@@ -42,8 +42,11 @@ export default function SideBar() {
   }, []);
 
   return (
-    <div className={"flex flex-col p-2 h-full"}>
-      <Tabs className={"flex flex-col  h-full"} defaultValue="files">
+    <div className={"flex flex-col p-0 h-full"}>
+      <Tabs
+        className={"flex flex-col p-2 relative  h-full"}
+        defaultValue="files"
+      >
         <TabsList className={"w-full bg-card"}>
           <TabsTrigger className={"w-full"} value="files">
             Files
@@ -58,19 +61,23 @@ export default function SideBar() {
           className="overflow-hidden flex flex-col h-full data-[state=inactive]:hidden"
         >
           <ScrollArea className="flex-grow ">
-            <div className="p-2">
+            <div className="p-0">
               <Tree initialExpandedItems={[]} elements={fileSystem}>
                 <FileSystemRenderer items={fileSystem} />
               </Tree>
             </div>
           </ScrollArea>
 
-          <div className={"flex w-full justify-between"}>
+          <div
+            className={
+              "flex absolute bottom-0 left-0 w-full p-0.5 justify-between"
+            }
+          >
             <CreateNote>
               <Button
                 size={"icon"}
                 variant={"ghost"}
-                className={"rounded-none h-8 w-8"}
+                className={"rounded-none h-6 w-6"}
               >
                 <PlusIcon className={"size-5"} />
               </Button>
@@ -88,13 +95,18 @@ export default function SideBar() {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Sync Now</DropdownMenuItem>
                 <DropdownMenuItem>Logs</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => router.push("/settings")} className={"cursor-pointer"}>Settings</DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => router.push("/settings")}
+                  className={"cursor-pointer"}
+                >
+                  Settings
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
             <Button
               size={"icon"}
               variant={"ghost"}
-              className={"rounded-none h-8 w-8"}
+              className={"rounded-none h-6 w-6"}
             >
               <ListTree className={"size-5"} />
             </Button>

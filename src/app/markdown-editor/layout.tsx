@@ -10,7 +10,7 @@ import {
 import { Dialog, DialogContent } from "@/components/tailwind/ui/dialog";
 import { CreateNote, CreateNoteContent } from "@/components/note";
 import { Button } from "@/components/tailwind/ui/button";
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, Lock, UnlockIcon } from "lucide-react";
 import SideBar from "./sidebar";
 import {
   MultipleDialogContent,
@@ -20,6 +20,8 @@ import {
   MultipleDialogTriggers,
 } from "@/components/tailwind/ui/multipleDialogs";
 import AIChatComponent from "../ai/aiDashboard";
+import { useEditorStore } from "@/hooks/use-editor-store";
+import { useFileSystemStore } from "@/hooks/use-file-system";
 
 export default function MarkdownEditorLayout({
   children,
@@ -28,8 +30,17 @@ export default function MarkdownEditorLayout({
 }) {
   const [openDialog, setOpenDialog] = useState<string>("");
   // TODO: sent to email.
+  const { charsCount, editorInstance } = useEditorStore();
+  const [editable, setEditable] = useState(false);
+
+  const toggleEditable = () => {
+    const newEditableState = !editable;
+    setEditable(newEditableState);
+    editorInstance?.setEditable(newEditableState);
+  };
+  const { saveStatus } = useFileSystemStore();
   return (
-    <div className="flex flex-row w-full h-full">
+    <div className="flex flex-row w-full h-full ">
       {/* Sidebar on desktop */}
       <div className="max-h-full">
         <MultipleDialogs openDialog={openDialog} setOpenDialog={setOpenDialog}>
@@ -66,7 +77,7 @@ export default function MarkdownEditorLayout({
       </div>
 
       {/* Content */}
-      <main className=" max-h-[100vh] flex flex-1 flex-col rounded-lg lg:mb-2 lg:min-w-0 lg:mr-2 lg:mt-2 p-2 overflow-auto bg-[hsl(var(--editor-background))]">
+      <main className=" max-h-[100vh] flex flex-1 flex-col rounded-lg lg:mb-5  lg:min-w-0 lg:mr-2 lg:mt-2  overflow-x-hidden bg-[hsl(var(--editor-background))]">
         <div
           className="h-full
          bg-[hsl(var(--editor-background))]
@@ -75,8 +86,29 @@ export default function MarkdownEditorLayout({
         >
           {children}
         </div>
+        <footer className={"bottom-0 fixed w-full "}>
+          <div className="flex  items-end justify-end gap-2 pr-72  w-full bg-background">
+            <div className="flex items-center gap-2 p-0.5">
+              <div className="rounded-lg cursor-pointer px-2 text-sm hover:text-foreground text-muted-foreground">
+                {editable ? (
+                  <UnlockIcon className="size-4" onClick={toggleEditable} />
+                ) : (
+                  <Lock className="size-4" onClick={toggleEditable} />
+                )}
+              </div>
+              <div className="rounded-lg  px-2  text-sm text-muted-foreground">
+                {saveStatus}
+              </div>
+              <div className="rounded-lg  px-2  text-sm text-muted-foreground">
+                {charsCount} words
+              </div>
+              <div className="rounded-lg  px-2  text-sm text-muted-foreground">
+                {editorInstance?.storage.characterCount.characters()} characters
+              </div>
+            </div>
+          </div>
+        </footer>
       </main>
-
       {/* Side bar for ai */}
       {/*<nav className="w-full h-full">*/}
       {/*  <AIChatComponent />*/}
