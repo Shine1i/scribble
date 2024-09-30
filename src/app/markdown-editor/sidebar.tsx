@@ -41,7 +41,8 @@ export default function SideBar() {
     getFileSystem();
   }, []);
 
-  return (
+
+    return (
     <div className={"flex flex-col p-0 h-full"}>
       <Tabs
         className={"flex flex-col p-2 relative  h-full"}
@@ -141,7 +142,12 @@ const FileSystemRenderer: React.FC<{
     handleRenameSubmit,
     handleDelete,
   } = useFileSystemStore();
-
+    const handleItemClick = (item: FileSystemItem) => {
+        const {openTab, setActiveTab} = useFileSystemStore.getState();
+        openTab(item);
+        setActiveTab(item.id);
+        handleSelectChange(item);
+    };
   useEffect(() => {
     if (renamingItem && inputRef.current) {
       const timer = setTimeout(() => {
@@ -174,6 +180,7 @@ const FileSystemRenderer: React.FC<{
               ) : (
                 <File
                   onClick={() => handleSelectChange(item)}
+                  onDoubleClick={() => handleItemClick(item)}
                   key={item.id}
                   value={item.id}
                 >

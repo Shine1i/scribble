@@ -18,12 +18,15 @@ interface FileSystemStore {
   saveStatus: SaveStatus;
   renamingItem: string | null;
   newName: string;
-
+    tabs: FileSystemItem[];
+    activeTab: string | null;
   setFileSystem: (items: FileSystemItem[]) => void;
   setSaveStatus: (status: SaveStatus) => void;
   setRenamingItem: (itemId: string | null) => void;
   setNewName: (name: string) => void;
-
+    openTab: (item: FileSystemItem) => void;
+    closeTab: (itemId: string) => void;
+    setActiveTab: (itemId: string) => void;
   getFileSystem: () => Promise<FileSystemItem[]>;
 
   createFile: ({
@@ -47,7 +50,8 @@ export const useFileSystemStore = create<FileSystemStore>((set, get) => ({
   saveStatus: SaveStatus.Saved,
   renamingItem: null,
   newName: "",
-
+    tabs: [],
+    activeTab: null,
   setFileSystem: (items) => set({ fileSystem: items }),
   getFileSystem: async () => {
     try {
@@ -142,4 +146,20 @@ export const useFileSystemStore = create<FileSystemStore>((set, get) => ({
     const updatedFileSystem = await fileManager.retrieveFileSystem();
     set({ fileSystem: updatedFileSystem });
   },
+    openTab: (item) => set((state) => {
+        if (!state.tabs.some(tab => tab.id === item.id)) {
+            return {tabs: [...state.tabs, item], activeTab: item.id};
+        }
+        return {activeTab: item.id};
+    }),
+
+    closeTab: (itemId) => set((state) => {
+        const newTabs = state.tabs.filter(tab => tab.id !== itemId);
+        const newActiveTab = state.activeTab === itemId
+            ? newTabs.length > 0 ? newTabs[newTabs.length - 1].id : null
+            : state.activeTab;
+        return {tabs: newTabs, activeTab: newActiveTab};
+    }),
+
+    setActiveTab: (itemId) => set({activeTab: itemId}),
 }));

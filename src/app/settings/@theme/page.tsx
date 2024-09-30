@@ -32,7 +32,6 @@ import { ColorPicker } from "@/app/settings/@theme/ColorPicker";
 import { hexToHsl } from "@/lib/themes/colorConversion";
 import { predefinedEditorThemes, predefinedThemes } from "@/lib/themes/themes";
 import { Input } from "@/components/tailwind/ui/input";
-
 export function ThemeColorChanger() {
   const {
     appColors,
@@ -85,7 +84,6 @@ export function ThemeColorChanger() {
       setNewThemeName("");
     }
   };
-
   return (
     <div className="p-6 max-w-2xl mx-auto bg-background rounded-xl shadow-md space-y-6">
       <h2 className="text-2xl font-bold text-foreground">

@@ -22,6 +22,7 @@ import {
 import AIChatComponent from "../ai/aiDashboard";
 import { useEditorStore } from "@/hooks/use-editor-store";
 import { useFileSystemStore } from "@/hooks/use-file-system";
+import {Tabss} from "@/components/Tabss";
 
 export default function MarkdownEditorLayout({
   children,
@@ -77,13 +78,15 @@ export default function MarkdownEditorLayout({
       </div>
 
       {/* Content */}
-      <main className=" max-h-[100vh] flex flex-1 flex-col rounded-lg lg:mb-5  lg:min-w-0 lg:mr-2 lg:mt-2  overflow-x-hidden bg-[hsl(var(--editor-background))]">
+        <main
+            className=" max-h-[100vh] flex flex-1 flex-col rounded-sm lg:mb-5  lg:min-w-0 lg:mr-2 lg:mt-2  overflow-x-hidden bg-[hsl(var(--editor-background))]">
         <div
           className="h-full
          bg-[hsl(var(--editor-background))]
           text-card-foreground
-          rounded-lg"
+          rounded-md"
         >
+            <Tabss/>
           {children}
         </div>
         <footer className={"bottom-0 fixed w-full "}>

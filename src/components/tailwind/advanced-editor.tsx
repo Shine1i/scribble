@@ -85,7 +85,18 @@ const MarkdownEditor = () => {
       convertMarkdownToHtml(currentFilePath);
     }
   }, [currentFilePath, editorInstance]);
-
+    const {activeTab, tabs} = useFileSystemStore();
+    const activeFile = tabs.find(tab => tab.id === activeTab);
+    const {handleSelectChange} = useFileSystemStore();
+    // Use activeFile to load content
+    useEffect(() => {
+        if (activeFile) {
+            // Load file content for the active tab
+            handleSelectChange(activeFile).then(content => {
+                setEditorContent(content);
+            });
+        }
+    }, [activeFile]);
   //Apply Codeblock Highlighting on the HTML from editor.getHTML()
   const highlightCodeblocks = (content: string) => {
     const doc = new DOMParser().parseFromString(content, "text/html");
@@ -149,7 +160,7 @@ const MarkdownEditor = () => {
           extensions={extensions}
           immediatelyRender={true}
           autofocus={true}
-          className="relative min-h-[500px] w-full  grow rounded-lg h-full"
+          className="relative min-h-[500px] w-full  grow rounded-md h-full"
           editorProps={{
             //@ts-ignore
             handleDOMEvents: {

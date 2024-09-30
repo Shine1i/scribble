@@ -4,65 +4,26 @@
 
 @layer base {
   :root {
-    --background: 210 20% 98%;
-    --foreground: 240 10% 3.9%;
-    --card: 53 74% 91%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 53 74% 91%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 167 77.2% 49.8%;
-    --primary-foreground: 167 100% 97.3%;
+      --background: 220 16.36% 21.57%;
+      --foreground: 218 27% 94%;
+      --card: 222 16% 28%;
+      --card-foreground: 0 0% 95%;
+      --popover: 220 16.48% 35.69%;
+      --popover-foreground: 0 0% 95%;
+      --primary: 210 34% 63%;
+      --primary-foreground: 167 100% 10.3%;
     --secondary: 0 100% 67%;
-    --secondary-foreground: 167 5.9% 10%;
-    --muted: 167 4.8% 95.9%;
-    --muted-foreground: 167 3.8% 46.1%;
-    --accent: 167 4.8% 95.9%;
-    --accent-foreground: 167 5.9% 10%;
+      --secondary-foreground: 0 0% 98%;
+      --muted: 245.71 24.14% 17.06%;
+      --muted-foreground: 167 5% 64.9%;
+      --accent: 220 17% 32%;
+      --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 85.7% 97.3%;
-    --border: 167 5.9% 90%;
-    --input: 167 5.9% 90%;
+      --border: 220 16% 22%;
+      --input: 247.5 23.53% 20%;
     --ring: 167 77.2% 49.8%;
     --radius: .5rem;
-    --chart-1: 167 77% 50%;
-    --chart-2: 167 83% 91%;
-    --chart-3: 167 80% 72%;
-    --chart-4: 167 83% 82%;
-    --chart-5: 167 77% 62%;
-
-    --novel-highlight-default: #ffffff;
-    --novel-highlight-purple: #f6f3f8;
-    --novel-highlight-red: #fdebeb;
-    --novel-highlight-yellow: #fbf4a2;
-    --novel-highlight-blue: #c1ecf9;
-    --novel-highlight-green: #acf79f;
-    --novel-highlight-orange: #faebdd;
-    --novel-highlight-pink: #faf1f5;
-    --novel-highlight-gray: #f1f1ef;
-
-
-    --gruvbox-fg: 40 4% 22%;
-    --gruvbox-heading: 0 72% 32%; 
-    --gruvbox-lead: 40 4% 29%;     
-    --gruvbox-link: 197 97% 25%;   
-    --gruvbox-bold: 0 0% 16%;      
-    --gruvbox-counter: 40 4% 36%;  
-    --gruvbox-bullet: 40 4% 44%;   
-    --gruvbox-hr: 43 13% 74%;      
-    --gruvbox-quote: 40 4% 58%;    
-    --gruvbox-quote-border: 157 15% 41%; 
-    --gruvbox-caption: 40 4% 58%;  
-    --gruvbox-inline-code: 0 72% 32%; 
-    --gruvbox-pre-code: 0 0% 16%;  
-    --gruvbox-pre-bg: 45 11% 91%;  
-    --gruvbox-th-border: 43 18% 80%;
-    --gruvbox-td-border: 43 13% 74%;
-    --rose-prose-h1: 34.96 87.59% 71.57%;
-    --rose-prose-h2: 34.96 87.59% 71.57%;
-    --rose-prose-h3: 189 43.48% 72.94%;
-    --rose-prose-h4: 267.19 57.14% 78.04%;
-    --rose-prose-h5: 197.23 48.96% 37.65%;
-    --rose-prose-h6: 2.45 55.06% 82.55%;
   }
 
   .dark {
@@ -70,7 +31,7 @@
     --foreground: 218 27% 94%;
     --card: 222 16% 28%;
     --card-foreground: 0 0% 95%;
-    --popover: 247.83 24.73% 18.24%;
+      --popover: 220 16.48% 35.69%;
     --popover-foreground: 0 0% 95%;
     --primary: 210 34% 63%;
     --primary-foreground: 167 100% 10.3%;
