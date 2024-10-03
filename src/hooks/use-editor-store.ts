@@ -16,7 +16,7 @@ export interface EditorState {
   editorInstance: EditorInstance | null;
   tocItems: TableOfContentData;
 
-  setEditorContent: (content: JSONContent | null) => void;
+  setEditorContent: (content: JSONContent | void) => void;
   setCharsCount: (count: number | undefined) => void;
   setEditorInstance: (instance: EditorInstance | null) => void;
   setTocItems: (items: TableOfContentData) => void;

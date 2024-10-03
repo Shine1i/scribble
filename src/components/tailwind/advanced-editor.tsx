@@ -1,5 +1,4 @@
 "use client";
-import { defaultEditorContent } from "@/lib/content";
 import {
   EditorCommand,
   EditorCommandEmpty,
@@ -9,35 +8,32 @@ import {
   type EditorInstance,
   EditorRoot,
 } from "novel";
-import { handleCommandNavigation, ImageResizer } from "novel/extensions";
-import { useEffect, useRef, useState } from "react";
-import { useDebouncedCallback } from "use-debounce";
-import { defaultExtensions } from "./extensions";
-import { ColorSelector } from "./selectors/color-selector";
-import { LinkSelector } from "./selectors/link-selector";
-import { NodeSelector } from "./selectors/node-selector";
-import { MathSelector } from "./selectors/math-selector";
-import { Separator } from "./ui/separator";
+import {handleCommandNavigation, ImageResizer} from "novel/extensions";
+import {useEffect, useState} from "react";
+import {useDebouncedCallback} from "use-debounce";
+import {defaultExtensions} from "./extensions";
+import {ColorSelector} from "./selectors/color-selector";
+import {LinkSelector} from "./selectors/link-selector";
+import {NodeSelector} from "./selectors/node-selector";
+import {MathSelector} from "./selectors/math-selector";
+import {Separator} from "./ui/separator";
 
-import { handleImageDrop, handleImagePaste } from "novel/plugins";
+import {handleImageDrop, handleImagePaste} from "novel/plugins";
 import GenerativeMenuSwitch from "./generative/generative-menu-switch";
-import { uploadFn } from "./image-upload";
-import { TextButtons } from "./selectors/text-buttons";
-import { slashCommand, suggestionItems } from "./slash-command";
+import {uploadFn} from "./image-upload";
+import {TextButtons} from "./selectors/text-buttons";
+import {slashCommand, suggestionItems} from "./slash-command";
 import hljs from "highlight.js";
 
-import { useEditorStore } from "@/hooks/use-editor-store";
-import { SaveStatus, useFileSystemStore } from "@/hooks/use-file-system";
+import {useEditorStore} from "@/hooks/use-editor-store";
+import {SaveStatus, useFileSystemStore} from "@/hooks/use-file-system";
+import {convertMarkdownFileToHtml} from "@/lib/utils";
+import {documentDir} from "@tauri-apps/api/path";
+import {getHierarchicalIndexes, TableOfContents,} from "@tiptap-pro/extension-table-of-contents";
+import {register} from "@tauri-apps/plugin-global-shortcut";
+import {useSettings} from "@/hooks/use-settings";
 
 ``;
-import { convertMarkdownFileToHtml } from "@/lib/utils";
-import { documentDir } from "@tauri-apps/api/path";
-import {
-  getHierarchicalIndexes,
-  TableOfContents,
-} from "@tiptap-pro/extension-table-of-contents";
-import { register } from "@tauri-apps/plugin-global-shortcut";
-import { useSettings } from "@/hooks/use-settings";
 
 const MarkdownEditor = () => {
   const { currentFilePath, saveCurrentFile, saveStatus, setSaveStatus } =
@@ -61,7 +57,11 @@ const MarkdownEditor = () => {
     slashCommand,
     TableOfContents.configure({
       getIndex: getHierarchicalIndexes,
-      onUpdate(content) {
+      onUpdate(content, isCreate) {
+        if (isCreate) {
+          setTocItems(content);
+          console.log(content, 'content')
+        }
         setTocItems(content);
       },
     }),

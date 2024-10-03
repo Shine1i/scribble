@@ -3,7 +3,7 @@ import { useThemeStore } from "@/hooks/use-theme-store";
 import { useEffect } from "react";
 
 export function ThemeLoader() {
-  const { appColors, editorColors } = useThemeStore();
+  const {appColors, editorColors} = useThemeStore();
 
   useEffect(() => {
     const applyTheme = () => {
@@ -18,5 +18,5 @@ export function ThemeLoader() {
     applyTheme();
   }, [appColors, editorColors]);
 
-  return null; // This component doesn't render anything
+  return null;
 }

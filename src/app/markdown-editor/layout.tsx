@@ -48,7 +48,7 @@ export default function MarkdownEditorLayout({
           <MultipleDialogTriggers>
             <ContextMenu>
               <ContextMenuTrigger>
-                <div className="w-64 h-full max-h-full">
+                <div className="md:w-64 hidden md:flex h-full max-h-full">
                   <SideBar />
                 </div>
               </ContextMenuTrigger>
@@ -79,7 +79,7 @@ export default function MarkdownEditorLayout({
 
       {/* Content */}
         <main
-            className=" max-h-[100vh] flex flex-1 flex-col rounded-sm lg:mb-5  lg:min-w-0 lg:mr-2 lg:mt-2  overflow-x-hidden bg-[hsl(var(--editor-background))]">
+            className=" max-h-[100vh] flex flex-1 flex-col rounded-sm lg:mb-5  lg:min-w-0 lg:mr-2 lg:mt-2  overflow-auto bg-[hsl(var(--editor-background))]">
         <div
           className="h-full
          bg-[hsl(var(--editor-background))]

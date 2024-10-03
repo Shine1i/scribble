@@ -29,6 +29,7 @@ export const ToCEmptyState = () => {
 
 export const ToC = ({ items = [], editor }) => {
   if (items.length === 0) {
+    console.log(items)
     return <ToCEmptyState />;
   }
 
