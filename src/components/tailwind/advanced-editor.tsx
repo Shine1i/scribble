@@ -33,8 +33,6 @@ import {getHierarchicalIndexes, TableOfContents,} from "@tiptap-pro/extension-ta
 import {register} from "@tauri-apps/plugin-global-shortcut";
 import {useSettings} from "@/hooks/use-settings";
 
-``;
-
 const MarkdownEditor = () => {
   const { currentFilePath, saveCurrentFile, saveStatus, setSaveStatus } =
     useFileSystemStore();
@@ -153,7 +151,7 @@ const MarkdownEditor = () => {
   if (!hydrated) return null;
 
   return (
-    <div className="relative w-full h-full cursor-text">
+    <div className="relative w-full h-full cursor-text bg-editor-background">
       <EditorRoot>
         <EditorContent
           initialContent={editorContent}

@@ -22,7 +22,8 @@ import {
 import AIChatComponent from "../ai/aiDashboard";
 import { useEditorStore } from "@/hooks/use-editor-store";
 import { useFileSystemStore } from "@/hooks/use-file-system";
-import {Tabss} from "@/components/Tabss";
+import { Tabss } from "@/components/Tabss";
+import { useSettings } from "@/hooks/use-settings";
 
 export default function MarkdownEditorLayout({
   children,
@@ -30,18 +31,9 @@ export default function MarkdownEditorLayout({
   children: React.ReactNode;
 }) {
   const [openDialog, setOpenDialog] = useState<string>("");
-  // TODO: sent to email.
-  const { charsCount, editorInstance } = useEditorStore();
-  const [editable, setEditable] = useState(false);
-
-  const toggleEditable = () => {
-    const newEditableState = !editable;
-    setEditable(newEditableState);
-    editorInstance?.setEditable(newEditableState);
-  };
-  const { saveStatus } = useFileSystemStore();
+  const { settings } = useSettings();
   return (
-    <div className="flex flex-row w-full h-full ">
+    <div className="flex flex-row w-full h-full max-w-[100vw]">
       {/* Sidebar on desktop */}
       <div className="max-h-full">
         <MultipleDialogs openDialog={openDialog} setOpenDialog={setOpenDialog}>
@@ -78,44 +70,56 @@ export default function MarkdownEditorLayout({
       </div>
 
       {/* Content */}
-        <main
-            className=" max-h-[100vh] flex flex-1 flex-col rounded-sm lg:mb-5  lg:min-w-0 lg:mr-2 lg:mt-2  overflow-auto bg-[hsl(var(--editor-background))]">
-        <div
-          className="h-full
-         bg-[hsl(var(--editor-background))]
-          text-card-foreground
-          rounded-md"
-        >
-            <Tabss/>
-          {children}
-        </div>
-        <footer className={"bottom-0 fixed w-full "}>
-          <div className="flex  items-end justify-end gap-2 pr-72  w-full bg-background">
-            <div className="flex items-center gap-2 p-0.5">
-              <div className="rounded-lg cursor-pointer px-2 text-sm hover:text-foreground text-muted-foreground">
-                {editable ? (
-                  <UnlockIcon className="size-4" onClick={toggleEditable} />
-                ) : (
-                  <Lock className="size-4" onClick={toggleEditable} />
-                )}
-              </div>
-              <div className="rounded-lg  px-2  text-sm text-muted-foreground">
-                {saveStatus}
-              </div>
-              <div className="rounded-lg  px-2  text-sm text-muted-foreground">
-                {charsCount} words
-              </div>
-              <div className="rounded-lg  px-2  text-sm text-muted-foreground">
-                {editorInstance?.storage.characterCount.characters()} characters
-              </div>
-            </div>
+      <main className="flex flex-row h-full w-full overflow-hidden">
+        <div className="flex flex-col h-full w-full min-w-0">
+          <Tabss />
+          <div className="flex-grow overflow-y-auto">
+            {children}
           </div>
-        </footer>
+          <Footer />
+        </div>
+        {/* Side bar for ai */}
+        {settings.ai.sidebar && (
+          <nav className="w-[400px] flex-shrink-0 h-full overflow-auto">
+            <AIChatComponent />
+          </nav>
+        )}
       </main>
-      {/* Side bar for ai */}
-      {/*<nav className="w-full h-full">*/}
-      {/*  <AIChatComponent />*/}
-      {/*</nav>*/}
     </div>
   );
 }
+
+function Footer() {
+    const { charsCount, editorInstance } = useEditorStore();
+    const [editable, setEditable] = useState(false);
+    const { saveStatus } = useFileSystemStore();
+  
+    const toggleEditable = () => {
+      const newEditableState = !editable;
+      setEditable(newEditableState);
+      editorInstance?.setEditable(newEditableState);
+    };
+  
+    return (
+      <footer className="bg-background border-t border-border">
+        <div className="flex items-center justify-end px-4 py-2 text-sm text-muted-foreground">
+          <button
+            onClick={toggleEditable}
+            className="p-1 rounded-md hover:bg-secondary transition-colors"
+            aria-label={editable ? "Lock editing" : "Unlock editing"}
+          >
+            {editable ? (
+              <UnlockIcon className="h-4 w-4" />
+            ) : (
+              <Lock className="h-4 w-4" />
+            )}
+          </button>
+          <div className="ml-4 space-x-4">
+            <span>{saveStatus}</span>
+            <span>{charsCount} words</span>
+            <span>{editorInstance?.storage.characterCount.characters()} characters</span>
+          </div>
+        </div>
+      </footer>
+    );
+  }

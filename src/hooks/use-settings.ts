@@ -3,6 +3,9 @@ import { tauriPersist } from "./tauri-persist";
 
 interface SettingsStore {
   settings: {
+    ai: {
+      sidebar: boolean;
+    };
     debounceRate: number;
     backup: {
       enabled: boolean;
@@ -21,6 +24,9 @@ interface SettingsStore {
 export const useSettings = create(
   tauriPersist<SettingsStore>("settings", (set, get) => ({
     settings: {
+      ai: {
+        sidebar: true,
+      },
       debounceRate: 2000,
       backup: {
         enabled: false,

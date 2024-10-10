@@ -4,26 +4,26 @@
 
 @layer base {
   :root {
-      --background: 220 16.36% 21.57%;
-      --foreground: 218 27% 94%;
-      --card: 222 16% 28%;
-      --card-foreground: 0 0% 95%;
-      --popover: 220 16.48% 35.69%;
-      --popover-foreground: 0 0% 95%;
-      --primary: 210 34% 63%;
-      --primary-foreground: 167 100% 10.3%;
+    --background: 220 16.36% 21.57%;
+    --foreground: 218 27% 94%;
+    --card: 222 16% 28%;
+    --card-foreground: 0 0% 95%;
+    --popover: 220 16.48% 35.69%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 210 34% 63%;
+    --primary-foreground: 167 100% 10.3%;
     --secondary: 0 100% 67%;
-      --secondary-foreground: 0 0% 98%;
-      --muted: 245.71 24.14% 17.06%;
-      --muted-foreground: 167 5% 64.9%;
-      --accent: 220 17% 32%;
-      --accent-foreground: 0 0% 98%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 245.71 24.14% 17.06%;
+    --muted-foreground: 167 5% 64.9%;
+    --accent: 220 17% 32%;
+    --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 85.7% 97.3%;
-      --border: 220 16% 22%;
-      --input: 247.5 23.53% 20%;
+    --border: 220 16% 22%;
+    --input: 247.5 23.53% 20%;
     --ring: 167 77.2% 49.8%;
-    --radius: .5rem;
+    --radius: 0.5rem;
   }
 
   .dark {
@@ -31,7 +31,7 @@
     --foreground: 218 27% 94%;
     --card: 222 16% 28%;
     --card-foreground: 0 0% 95%;
-      --popover: 220 16.48% 35.69%;
+    --popover: 220 16.48% 35.69%;
     --popover-foreground: 0 0% 95%;
     --primary: 210 34% 63%;
     --primary-foreground: 167 100% 10.3%;
@@ -85,10 +85,8 @@
     --editor-h4: 210 34% 63%;
     --editor-h5: 210 34% 63%;
     --editor-h6: 210 34% 63%;
-
   }
 }
-
 
 @layer base {
   * {
@@ -99,7 +97,6 @@
     @apply bg-background text-foreground;
   }
 }
-
 
 pre {
   background: #0d0d0d;
@@ -168,18 +165,16 @@ pre {
   }
 }
 
-
 *::-webkit-scrollbar {
   @apply w-1.5 h-1.5 !important;
-
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-transparent
+  @apply bg-transparent;
 }
 
 mark {
-  @apply !bg-[#403d52]
+  @apply !bg-[#403d52];
 }
 .sidebar-options {
   align-items: flex-start;

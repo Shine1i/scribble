@@ -19,6 +19,7 @@ import {
 import { useSettings } from "@/hooks/use-settings";
 import { Store } from "@tauri-apps/plugin-store";
 import { Button } from "@/components/tailwind/ui/button";
+import { Switch } from "@/components/tailwind/ui/switch";
 
 export default function GeneralPage() {
   const { settings, setSettings } = useSettings();
@@ -26,6 +27,22 @@ export default function GeneralPage() {
   return (
     <div className="w-full flex flex-col gap-4">
       <h1 className="text-3xl font-bold">General Settings</h1>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>AI Settings</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-row items-center justify-between gap-2">
+            <Label htmlFor="ai-sidebar">Enable AI Sidebar:</Label>
+            <Switch
+              id="ai-sidebar"
+              checked={settings.ai.sidebar}
+              onCheckedChange={(checked) => setSettings("ai.sidebar", checked)}
+            />
+          </div>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>
@@ -85,10 +102,7 @@ export default function GeneralPage() {
                 id="s3-access-key"
                 value={settings.backup.config.access.accessKey}
                 onChange={(e) =>
-                  setSettings(
-                    `backup.config.access.accessKey`,
-                    e.target.value,
-                  )
+                  setSettings(`backup.config.access.accessKey`, e.target.value)
                 }
               />
             </div>
@@ -101,10 +115,7 @@ export default function GeneralPage() {
                 type="password"
                 value={settings.backup.config.access.secretKey}
                 onChange={(e) =>
-                  setSettings(
-                    `backup.config.access.secretKey`,
-                    e.target.value,
-                  )
+                  setSettings(`backup.config.access.secretKey`, e.target.value)
                 }
               />
             </div>

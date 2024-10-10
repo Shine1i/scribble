@@ -7,7 +7,7 @@ import Providers from "./providers";
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className="h-full " suppressHydrationWarning>
-      <body className="h-full">
+      <body className="h-full w-full">
         <Providers>{children}</Providers>
       </body>
     </html>
