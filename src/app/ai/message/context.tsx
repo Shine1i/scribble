@@ -5,8 +5,8 @@ import { File, FileText, X } from "lucide-react";
 export const ContextBadge = ({context, removable}: {context: MessageContext, removable?: boolean}) => {
   const { removeInputMessageContext } = useAIMessages();
   return (
-    <Badge key={context.data}>
-      {context.contentType === "pdf" ? <File /> : <FileText />}
+    <Badge className="px-2 py-0.5 text-xs" key={context.data}>
+      {context.contentType === "pdf" ? <File className="w-3 h-3"/> : <FileText className="w-3 h-3"/>}
       <span className="ml-1">
         {context.shortDescription}
       </span>
@@ -14,7 +14,7 @@ export const ContextBadge = ({context, removable}: {context: MessageContext, rem
         <button onClick={() => {
           removeInputMessageContext(context.id);
         }}>
-          <X className="w-4 h-4 ml-1" />
+          <X className="w-3 h-3 ml-1" />
         </button>
       )}
     </Badge>

@@ -226,7 +226,7 @@ interface DragDropPayload {
   position: Position;
 }
 
-interface DragDropEvent {
+export interface DragDropEvent {
   event: "tauri://drag-drop";
   payload: DragDropPayload;
   id: number;

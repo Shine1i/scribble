@@ -1,7 +1,7 @@
 "use client";
 
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
-import { Bot, FileText, Send, User, X } from "lucide-react";
+import { Bot, FileText, Plus, Send, User, X } from "lucide-react";
 import { ScrollArea } from "@/components/tailwind/ui/scroll-area";
 import { Button } from "@/components/tailwind/ui/button";
 import { Input } from "@/components/tailwind/ui/input";
@@ -130,17 +130,6 @@ export default function AIChatComponent() {
     useAIMessages();
   const { setContainer, scrollToBottom } = useAiContainer();
 
-  useEffect(() => {
-    const unlistenFileDrop = listen("tauri://drag-drop", async (event) => {
-      const { payload } = event;
-      console.log(payload);
-    });
-
-    return () => {
-      unlistenFileDrop.then((unlisten) => unlisten());
-    };
-  }, []);
-
   const localContainer = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (localContainer.current) setContainer(localContainer.current);
@@ -236,8 +225,8 @@ export default function AIChatComponent() {
               <Popover>
                 <PopoverTrigger>
                   <Button size={"icon"}>
-                    <X className="w-4 h-4" />
-                    <span className="sr-only">Clear</span>
+                    <Plus className="w-4 h-4" />
+                    <span className="sr-only">Add</span>
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent>
